@@ -76,8 +76,8 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
             return
         }
 
-        // Reject null bytes and control characters (except space)
-        if (/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/.test(ap.ssid)) {
+        // Reject null bytes and all control characters (space is allowed as \x20)
+        if (/[\x00-\x1F\x7F]/.test(ap.ssid)) {
             logger.error("Invalid SSID format - contains control characters")
             return
         }
