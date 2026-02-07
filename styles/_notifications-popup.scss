@@ -8,9 +8,32 @@ window.notification-popup {
     min-width: 20rem;
     max-width: 22rem;
 
-    &.urgency-critical {
-        border-left: 2px solid $accent_bg_color;
+    &.urgency-low {
+        opacity: 0.85;
+        border-left: 2px solid gtkalpha($window_fg_color, $alpha-strong);
     }
+
+    &.urgency-normal {
+        // Style par défaut (rien de spécial)
+    }
+
+    &.urgency-critical {
+        border-left: 3px solid $error_color;
+        background: rgba(255, 0, 0, 0.05);
+    }
+}
+
+.notification-image-container {
+    margin: 0.5rem;
+    border-radius: $radius-sm;
+}
+
+.notification-image {
+    border-radius: $radius-sm;
+    min-width: 5rem;
+    min-height: 5rem;
+    max-width: 8rem;
+    max-height: 8rem;
 }
 
 .notification-icon {
@@ -21,6 +44,13 @@ window.notification-popup {
 .notification-app-name {
     font-weight: $font-weight-semibold;
     opacity: $alpha-solid;
+}
+
+.notification-time {
+    font-size: $font-size-sm;
+    opacity: $alpha-medium;
+    margin-left: $space-2;
+    margin-right: $space-1;
 }
 
 .notification-close {

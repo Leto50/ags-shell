@@ -45,7 +45,8 @@ export default function NotificationItem({ notification }: NotificationItemProps
             {/* App icon */}
             {notification.app_icon && (
                 <image
-                    iconName={notification.app_icon}
+                    file={notification.app_icon.startsWith('/') ? notification.app_icon : undefined}
+                    iconName={!notification.app_icon.startsWith('/') ? notification.app_icon : undefined}
                     class="notification-item-icon"
                     pixelSize={32}
                 />
@@ -108,29 +109,38 @@ export default function NotificationItem({ notification }: NotificationItemProps
                 )}
 
                 {/* Action buttons */}
-                {config.notifications?.showActions !== false && notification.actions && notification.actions.length > 0 && (
-                    <box
-                        orientation={Gtk.Orientation.HORIZONTAL}
-                        spacing={8}
-                        cssClasses={["notification-item-actions"]}
-                    >
-                        {notification.actions.map((action: any) => (
-                            <button
-                                cssClasses={["notification-action-button"]}
-                                onClicked={() => {
-                                    try {
-                                        notification.invoke(action.id)
-                                        dismissNotification()
-                                    } catch (err) {
-                                        logger.error("Failed to invoke action:", err)
-                                    }
-                                }}
-                            >
-                                <label label={action.label} />
-                            </button>
-                        ))}
-                    </box>
-                )}
+                {config.notifications?.showActions !== false && notification.actions && notification.actions.length > 0 && (() => {
+                    // Filter out "default" action and actions without labels
+                    const visibleActions = notification.actions.filter((action: any) =>
+                        action.id !== "default" && action.label?.trim()
+                    )
+
+                    if (visibleActions.length === 0) return null
+
+                    return (
+                        <box
+                            orientation={Gtk.Orientation.HORIZONTAL}
+                            spacing={8}
+                            cssClasses={["notification-item-actions"]}
+                        >
+                            {visibleActions.map((action: any) => (
+                                <button
+                                    cssClasses={["notification-action-button"]}
+                                    onClicked={() => {
+                                        try {
+                                            notification.invoke(action.id)
+                                            dismissNotification()
+                                        } catch (err) {
+                                            logger.error("Failed to invoke action:", err)
+                                        }
+                                    }}
+                                >
+                                    <label label={action.label} />
+                                </button>
+                            ))}
+                        </box>
+                    )
+                })()}
             </box>
         </box>
     )

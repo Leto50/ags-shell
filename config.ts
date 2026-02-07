@@ -44,6 +44,7 @@ export interface Config {
         maxVisiblePopups: number
         popupSpacing: number
         showActions: boolean
+        showActionsOnHover: boolean
     }
 }
 
@@ -89,7 +90,8 @@ const DEFAULT_CONFIG: Config = {
         popupTimeout: 5000,
         maxVisiblePopups: 3,
         popupSpacing: 8,
-        showActions: true
+        showActions: true,
+        showActionsOnHover: false
     }
 }
 

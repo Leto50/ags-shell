@@ -17,12 +17,40 @@ interface NotificationPopupProps {
     yOffset: number
 }
 
+// Helper to check if notification has an image
+const notifHasImg = (notif: Notifd.Notification): boolean => {
+    return !!(notif.image && notif.image.length > 0)
+}
+
 export default function NotificationPopup({ notification, onClose, yOffset }: NotificationPopupProps) {
     const windowName = `notification-popup-${notification.id}`
+    const hasImage = notifHasImg(notification)
+
+    // Debug: log ALL notification properties
+    console.log(`=== NOTIFICATION ${notification.id} ===`)
+    console.log("app_name:", notification.app_name)
+    console.log("app_icon:", notification.app_icon)
+    console.log("summary:", notification.summary)
+    console.log("body:", notification.body)
+    console.log("image:", notification.image)
+    console.log("actions:", notification.actions)
+    console.log("actions.length:", notification.actions?.length)
+    if (notification.actions && notification.actions.length > 0) {
+        notification.actions.forEach((action: any, i: number) => {
+            console.log(`  action[${i}]:`, action)
+            console.log(`  action[${i}].id:`, action.id)
+            console.log(`  action[${i}].label:`, action.label)
+        })
+    }
+    console.log("===========================")
 
     // Auto-dismiss timeout state
     let dismissTimeout: number | null = null
     let isPaused = false
+
+    // Actions reveal state
+    let actionsRevealer: Gtk.Revealer | null = null
+    const showActionsOnHover = config.notifications?.showActionsOnHover ?? false
 
     // Setup auto-dismiss
     const setupAutoDismiss = () => {
@@ -124,15 +152,61 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
                 })
             }}
         >
-            <box orientation={Gtk.Orientation.HORIZONTAL} spacing={12}>
-                {/* App icon */}
-                {notification.app_icon && (
-                    <image
-                        icon-name={notification.app_icon}
-                        class="notification-icon"
-                        pixel-size={32}
-                    />
-                )}
+            <box
+                orientation={Gtk.Orientation.HORIZONTAL}
+                spacing={12}
+                $={(self) => {
+                    // Right click gesture
+                    const rightClickGesture = new Gtk.GestureClick()
+                    rightClickGesture.set_button(3)  // Right click
+                    rightClickGesture.connect("pressed", () => {
+                        logger.debug(`  🖱️  Right-click dismiss notification ${notification.id}`)
+                        onClose()
+                    })
+                    self.add_controller(rightClickGesture)
+
+                    // Hover controller for actions reveal
+                    if (showActionsOnHover) {
+                        const hoverController = new Gtk.EventControllerMotion()
+                        hoverController.connect("enter", () => {
+                            if (actionsRevealer) {
+                                actionsRevealer.revealChild = true
+                            }
+                        })
+                        hoverController.connect("leave", () => {
+                            if (actionsRevealer) {
+                                actionsRevealer.revealChild = false
+                            }
+                        })
+                        self.add_controller(hoverController)
+                    }
+                }}
+            >
+                    {/* Large notification image (if available) */}
+                    {hasImage && (
+                        <box
+                            class="notification-image-container"
+                            halign={Gtk.Align.CENTER}
+                            valign={Gtk.Align.CENTER}
+                        >
+                            <Gtk.Picture
+                                class="notification-image"
+                                pixbuf={notification.image}
+                                contentFit={Gtk.ContentFit.COVER}
+                                canShrink={false}
+                            />
+                        </box>
+                    )}
+
+                    {/* App icon (only if no large image) */}
+                    {!hasImage && notification.app_icon && (
+                        <image
+                            file={notification.app_icon.startsWith('/') ? notification.app_icon : undefined}
+                            icon-name={!notification.app_icon.startsWith('/') ? notification.app_icon : undefined}
+                            class="notification-icon"
+                            pixel-size={32}
+                        />
+                    )}
 
                 {/* Content */}
                 <box
@@ -141,7 +215,7 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
                     hexpand={true}
                     spacing={4}
                 >
-                    {/* Header with app name and close button */}
+                    {/* Header with app name, time, and close button */}
                     <box
                         orientation={Gtk.Orientation.HORIZONTAL}
                         class="notification-header"
@@ -150,6 +224,12 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
                             label={notification.app_name || "Notification"}
                             class="notification-app-name"
                             halign={Gtk.Align.START}
+                            hexpand={false}
+                        />
+                        <label
+                            label={GLib.DateTime.new_from_unix_local(notification.time).format("%H:%M") || ""}
+                            class="notification-time"
+                            halign={Gtk.Align.END}
                             hexpand={true}
                         />
                         <button
@@ -167,7 +247,7 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
                         class="notification-summary"
                         halign={Gtk.Align.START}
                         wrap={true}
-                        max-width-chars={40}
+                        max-width-chars={hasImage ? 19 : 30}
                     />
 
                     {/* Body text */}
@@ -177,33 +257,51 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
                             class="notification-body"
                             halign={Gtk.Align.START}
                             wrap={true}
-                            max-width-chars={40}
-                            lines={4}
+                            max-width-chars={hasImage ? 28 : 35}
+                            lines={2}
                             ellipsize={3}  // END
                         />
                     )}
 
                     {/* Action buttons */}
-                    {config.notifications?.showActions !== false && notification.actions && notification.actions.length > 0 && (
-                        <box
-                            orientation={Gtk.Orientation.HORIZONTAL}
-                            class="notification-actions"
-                            spacing={8}
-                        >
-                            {notification.actions.map((action: NotificationAction) => (
-                                <button
-                                    class="notification-action-button"
-                                    onClicked={() => {
-                                        logger.debug(`  🔘 Invoking action: ${action.id}`)
-                                        notification.invoke(action.id)
-                                        onClose()
-                                    }}
+                    {config.notifications?.showActions !== false && notification.actions && notification.actions.length > 0 && (() => {
+                        // Filter out "default" action and actions without labels
+                        const visibleActions = notification.actions.filter((action: NotificationAction) =>
+                            action.id !== "default" && action.label?.trim()
+                        )
+
+                        if (visibleActions.length === 0) return null
+
+                        return (
+                            <Gtk.Revealer
+                                transitionType={Gtk.RevealerTransitionType.SLIDE_DOWN}
+                                transitionDuration={200}
+                                revealChild={!showActionsOnHover}
+                                $={(self) => {
+                                    actionsRevealer = self
+                                }}
+                            >
+                                <box
+                                    orientation={Gtk.Orientation.HORIZONTAL}
+                                    class="notification-actions"
+                                    spacing={8}
                                 >
-                                    <label label={action.label} />
-                                </button>
-                            ))}
-                        </box>
-                    )}
+                                    {visibleActions.map((action: NotificationAction) => (
+                                        <button
+                                            class="notification-action-button"
+                                            onClicked={() => {
+                                                logger.debug(`  🔘 Invoking action: ${action.id}`)
+                                                notification.invoke(action.id)
+                                                onClose()
+                                            }}
+                                        >
+                                            <label label={action.label} />
+                                        </button>
+                                    ))}
+                                </box>
+                            </Gtk.Revealer>
+                        )
+                    })()}
                 </box>
             </box>
         </window>
