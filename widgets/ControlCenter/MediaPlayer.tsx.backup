@@ -1,0 +1,427 @@
+import { Gtk } from "ags/gtk4"
+import GLib from "gi://GLib"
+import GdkPixbuf from "gi://GdkPixbuf"
+import Mpris from "gi://AstalMpris"
+import { mpris } from "../../lib/services"
+
+function AlbumCover({ player }) {
+    return (
+        <Gtk.Frame class="album-cover-box">
+            <image
+                pixelSize={52}
+                $={(self) => {
+                    const loadAndCropImage = (path) => {
+                        try {
+                            const pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
+                            const width = pixbuf.get_width()
+                            const height = pixbuf.get_height()
+
+                            const size = Math.min(width, height)
+                            const x = Math.floor((width - size) / 2)
+                            const y = Math.floor((height - size) / 2)
+
+                            const cropped = pixbuf.new_subpixbuf(x, y, size, size)
+                            const scaled = cropped.scale_simple(52, 52, GdkPixbuf.InterpType.BILINEAR)
+
+                            self.set_from_pixbuf(scaled)
+                        } catch (e) {
+                            self.set_from_icon_name("folder-music-symbolic")
+                        }
+                    }
+
+                    const update = () => {
+                        if (player.coverArt) {
+                            loadAndCropImage(player.coverArt)
+                        } else {
+                            self.set_from_icon_name("folder-music-symbolic")
+                        }
+                    }
+
+                    update()
+                    player.connect("notify::cover-art", update)
+                }}
+            />
+        </Gtk.Frame>
+    )
+}
+
+function ScrollingLabel({ player, property, formatter }) {
+    return (
+        <Gtk.ScrolledWindow
+            $={(self) => {
+                self.set_policy(Gtk.PolicyType.EXTERNAL, Gtk.PolicyType.NEVER)
+                self.set_propagate_natural_width(false)
+                self.set_propagate_natural_height(true)
+                self.set_overflow(Gtk.Overflow.HIDDEN)
+
+                const box = new Gtk.Box({
+                    orientation: Gtk.Orientation.HORIZONTAL,
+                    spacing: 30,
+                })
+
+                const getText = () => formatter ? formatter(player) : (player[property] || "Unknown")
+
+                const label1 = new Gtk.Label({
+                    label: getText(),
+                    halign: Gtk.Align.START,
+                    ellipsize: 0,
+                    css_classes: property === "title" ? ["heading"] : ["caption"],
+                })
+
+                const label2 = new Gtk.Label({
+                    label: getText(),
+                    halign: Gtk.Align.START,
+                    ellipsize: 0,
+                    visible: false,
+                    css_classes: property === "title" ? ["heading"] : ["caption"],
+                })
+
+                box.append(label1)
+                box.append(label2)
+                self.set_child(box)
+
+                let tickId = 0
+                let scrollPos = 0
+                const adjustment = self.get_hadjustment()
+
+                const startScrolling = () => {
+                    if (tickId) {
+                        self.remove_tick_callback(tickId)
+                        tickId = 0
+                    }
+
+                    scrollPos = 0
+                    adjustment.set_value(0)
+
+                    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, () => {
+                        const labelWidth = label1.get_width()
+                        const scrolledWidth = self.get_width()
+
+                        if (labelWidth <= scrolledWidth) {
+                            label2.visible = false
+                            return false
+                        }
+
+                        label2.visible = true
+                        tickId = self.add_tick_callback(() => {
+                            scrollPos += 0.4
+                            const loopPoint = labelWidth + 30
+
+                            if (scrollPos >= loopPoint) {
+                                scrollPos = scrollPos - loopPoint
+                            }
+
+                            adjustment.set_value(scrollPos)
+                            return true
+                        })
+
+                        return false
+                    })
+                }
+
+                const updateLabel = () => {
+                    const text = getText()
+
+                    label1.label = ""
+                    label2.label = ""
+                    label2.visible = false
+
+                    GLib.timeout_add(GLib.PRIORITY_DEFAULT, 10, () => {
+                        label1.label = text
+                        label2.label = text
+                        startScrolling()
+                        return false
+                    })
+                }
+
+                updateLabel()
+
+                if (property === "title") {
+                    player.connect("notify::title", updateLabel)
+                } else {
+                    player.connect("notify::artist", updateLabel)
+                    player.connect("notify::album", updateLabel)
+                }
+
+                self.connect("destroy", () => {
+                    if (tickId) {
+                        self.remove_tick_callback(tickId)
+                        tickId = 0
+                    }
+                })
+            }}
+        />
+    )
+}
+
+function PlayerControls({ player }) {
+    return (
+        <box orientation={Gtk.Orientation.HORIZONTAL} spacing={8} halign={Gtk.Align.END} valign={Gtk.Align.CENTER}>
+            <button class="circular button" onClicked={() => player.previous()}>
+                <image icon-name="media-skip-backward-symbolic" />
+            </button>
+
+            <button class="circular button" onClicked={() => player.play_pause()}>
+                <image
+                    icon-name={player.playback_status === Mpris.PlaybackStatus.PLAYING ? "media-playback-pause-symbolic" : "media-playback-start-symbolic"}
+                    $={(self) => {
+                        player.connect("notify::playback-status", () => {
+                            self.iconName = player.playback_status === Mpris.PlaybackStatus.PLAYING
+                                ? "media-playback-pause-symbolic"
+                                : "media-playback-start-symbolic"
+                        })
+                    }}
+                />
+            </button>
+
+            <button class="circular button" onClicked={() => player.next()}>
+                <image icon-name="media-skip-forward-symbolic" />
+            </button>
+        </box>
+    )
+}
+
+function PlayerUI({ player }) {
+    const formatArtistAlbum = (p) => {
+        const artist = p.artist || "Unknown Artist"
+        const album = p.album || ""
+        return album ? `${artist} - ${album}` : artist
+    }
+
+    const frame = new Gtk.Frame({ css_classes: ["album-cover-box"] })
+    const img = new Gtk.Image({ pixel_size: 52 })
+
+    const loadAndCropImage = (path) => {
+        try {
+            const pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
+            const width = pixbuf.get_width()
+            const height = pixbuf.get_height()
+            const size = Math.min(width, height)
+            const x = Math.floor((width - size) / 2)
+            const y = Math.floor((height - size) / 2)
+            const cropped = pixbuf.new_subpixbuf(x, y, size, size)
+            const scaled = cropped.scale_simple(52, 52, GdkPixbuf.InterpType.BILINEAR)
+            img.set_from_pixbuf(scaled)
+        } catch (e) {
+            img.set_from_icon_name("folder-music-symbolic")
+        }
+    }
+
+    if (player.coverArt) {
+        loadAndCropImage(player.coverArt)
+    } else {
+        img.set_from_icon_name("folder-music-symbolic")
+    }
+
+    player.connect("notify::cover-art", () => {
+        if (player.coverArt) {
+            loadAndCropImage(player.coverArt)
+        } else {
+            img.set_from_icon_name("folder-music-symbolic")
+        }
+    })
+
+    frame.set_child(img)
+
+    // Scrolling title
+    const createScrollingLabel = (text, isTitle) => {
+        const scrolled = new Gtk.ScrolledWindow()
+        scrolled.set_policy(Gtk.PolicyType.EXTERNAL, Gtk.PolicyType.NEVER)
+        scrolled.set_propagate_natural_width(false)
+        scrolled.set_propagate_natural_height(true)
+        scrolled.set_overflow(Gtk.Overflow.HIDDEN)
+        scrolled.set_min_content_width(0)
+        scrolled.set_hexpand(true)
+
+        const box = new Gtk.Box({
+            orientation: Gtk.Orientation.HORIZONTAL,
+            spacing: 30,
+        })
+
+        const label1 = new Gtk.Label({
+            label: text,
+            halign: Gtk.Align.START,
+            ellipsize: 0,
+            css_classes: isTitle ? ["heading"] : ["caption"],
+        })
+
+        const label2 = new Gtk.Label({
+            label: text,
+            halign: Gtk.Align.START,
+            ellipsize: 0,
+            visible: false,
+            css_classes: isTitle ? ["heading"] : ["caption"],
+        })
+
+        box.append(label1)
+        box.append(label2)
+        scrolled.set_child(box)
+
+        let tickId = 0
+        let scrollPos = 0
+        const adjustment = scrolled.get_hadjustment()
+
+        const startScrolling = () => {
+            if (tickId) {
+                scrolled.remove_tick_callback(tickId)
+                tickId = 0
+            }
+
+            scrollPos = 0
+            adjustment.set_value(0)
+
+            GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, () => {
+                const labelWidth = label1.get_allocated_width()
+                const scrolledWidth = scrolled.get_allocated_width()
+
+                if (labelWidth <= scrolledWidth || labelWidth === 0) {
+                    label2.visible = false
+                    return false
+                }
+
+                label2.visible = true
+                tickId = scrolled.add_tick_callback(() => {
+                    scrollPos += 0.3  // Vitesse réduite pour plus de fluidité
+                    const loopPoint = labelWidth + 30
+
+                    if (scrollPos >= loopPoint) {
+                        scrollPos = 0  // Reset propre au lieu de soustraire
+                    }
+
+                    adjustment.set_value(Math.floor(scrollPos))  // Arrondir pour éviter sub-pixel artifacts
+                    return true
+                })
+
+                return false
+            })
+        }
+
+        const updateLabel = (newText) => {
+            // Stop current scrolling cleanly
+            if (tickId) {
+                scrolled.remove_tick_callback(tickId)
+                tickId = 0
+            }
+
+            // Clear labels and force redraw
+            label1.label = ""
+            label2.label = ""
+            label2.visible = false
+            scrollPos = 0
+            adjustment.set_value(0)
+            scrolled.queue_draw()
+
+            GLib.timeout_add(GLib.PRIORITY_DEFAULT, 50, () => {
+                label1.label = newText
+                label2.label = newText
+                scrolled.queue_draw()
+                startScrolling()
+                return false
+            })
+        }
+
+        startScrolling()
+
+        return { widget: scrolled, update: updateLabel, label1, label2 }
+    }
+
+    const titleScroll = createScrollingLabel(player.title || "Unknown", true)
+    const artistScroll = createScrollingLabel(formatArtistAlbum(player), false)
+
+    player.connect("notify::title", () => {
+        titleScroll.update(player.title || "Unknown")
+    })
+
+    player.connect("notify::artist", () => {
+        artistScroll.update(formatArtistAlbum(player))
+    })
+
+    player.connect("notify::album", () => {
+        artistScroll.update(formatArtistAlbum(player))
+    })
+
+    const infoBox = new Gtk.Box({
+        orientation: Gtk.Orientation.VERTICAL,
+        spacing: 2,
+        valign: Gtk.Align.CENTER,
+        hexpand: true,
+        css_classes: ["player-info"],
+    })
+    infoBox.append(titleScroll.widget)
+    infoBox.append(artistScroll.widget)
+
+    const prevBtn = new Gtk.Button({ css_classes: ["circular", "button"] })
+    const prevIcon = new Gtk.Image({ icon_name: "media-skip-backward-symbolic" })
+    prevBtn.set_child(prevIcon)
+    prevBtn.connect("clicked", () => player.previous())
+
+    const playBtn = new Gtk.Button({ css_classes: ["circular", "button"] })
+    const playIcon = new Gtk.Image({
+        icon_name: player.playback_status === Mpris.PlaybackStatus.PLAYING
+            ? "media-playback-pause-symbolic"
+            : "media-playback-start-symbolic"
+    })
+    playBtn.set_child(playIcon)
+    playBtn.connect("clicked", () => player.play_pause())
+    player.connect("notify::playback-status", () => {
+        playIcon.icon_name = player.playback_status === Mpris.PlaybackStatus.PLAYING
+            ? "media-playback-pause-symbolic"
+            : "media-playback-start-symbolic"
+    })
+
+    const nextBtn = new Gtk.Button({ css_classes: ["circular", "button"] })
+    const nextIcon = new Gtk.Image({ icon_name: "media-skip-forward-symbolic" })
+    nextBtn.set_child(nextIcon)
+    nextBtn.connect("clicked", () => player.next())
+
+    const controlsBox = new Gtk.Box({
+        orientation: Gtk.Orientation.HORIZONTAL,
+        spacing: 8,
+        halign: Gtk.Align.END,
+        valign: Gtk.Align.CENTER,
+    })
+    controlsBox.append(prevBtn)
+    controlsBox.append(playBtn)
+    controlsBox.append(nextBtn)
+
+    const mainBox = new Gtk.Box({
+        orientation: Gtk.Orientation.HORIZONTAL,
+        spacing: 12,
+        css_classes: ["control-section", "card", "card-padding"],
+    })
+    mainBox.append(frame)
+    mainBox.append(infoBox)
+    mainBox.append(controlsBox)
+
+    return mainBox
+}
+
+export default function MediaPlayer() {
+    return (
+        <box
+            $={(self) => {
+                const rebuild = () => {
+                    while (self.get_first_child()) {
+                        self.remove(self.get_first_child())
+                    }
+
+                    const players = mpris.get_players()
+                    const activePlayers = players
+                        .filter(p =>
+                            p.playback_status === Mpris.PlaybackStatus.PLAYING ||
+                            p.playback_status === Mpris.PlaybackStatus.PAUSED
+                        )
+                        .sort((a, b) => a.playback_status - b.playback_status)
+
+                    if (activePlayers.length === 0) return
+
+                    const playerWidget = PlayerUI({ player: activePlayers[0] })
+                    self.append(playerWidget)
+                }
+
+                rebuild()
+                mpris.connect("notify::players", rebuild)
+            }}
+        />
+    )
+}

@@ -1,0 +1,420 @@
+ ✘ leto@letoarch  ~  ags run
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.598: Theme parser error: gtk.css:2:1-31: Failed to import: Erreur lors de l’ouverture du fichier /home/leto/.config/gtk-4.0/libadwaita.css : Aucun fichier ou dossier de ce nom
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.598: Theme parser error: gtk.css:3:1-38: Failed to import: Erreur lors de l’ouverture du fichier /home/leto/.config/gtk-4.0/libadwaita-tweaks.css : Aucun fichier ou dossier de ce nom
+
+(gjs:1724030): Adwaita-WARNING **: 16:02:04.626: Using GtkSettings:gtk-application-prefer-dark-theme with libadwaita is unsupported. Please use AdwStyleManager:color-scheme instead.
+Gjs-Console-Message: 16:02:04.669: 📄 Loading config from: /home/leto/.config/ags/config.conf
+Gjs-Console-Message: 16:02:04.672: ✅ Config loaded successfully
+Gjs-Console-Message: 16:02:04.696: 📚 Loaded 3 existing notifications from history (sorted by time)
+Gjs-Console-Message: 16:02:04.696: ✅ NotificationManager initialized
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.696: Theme parser error: <data>:9:3-8: No property named "width"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.696: Theme parser error: <data>:11:3-11: No property named "overflow"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.696: Theme parser error: <data>:17:3-11: No property named "overflow"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.696: Theme parser error: <data>:32:3-17: No property named "pointer-events"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.696: Theme parser error: <data>:123:3-12: No property named "max-width"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.696: Theme parser error: <data>:138:3-11: No property named "overflow"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.696: Theme parser error: <data>:142:3-11: No property named "overflow"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.696: Theme parser error: <data>:162:3-12: No property named "max-width"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.696: Theme parser error: <data>:163:3-13: No property named "max-height"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:296:3-25: No property named "-webkit-font-smoothing"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:297:3-26: No property named "-moz-osx-font-smoothing"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:298:3-17: No property named "text-rendering"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:455:14-18: Percentages are not allowed here
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:456:15-19: Percentages are not allowed here
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:461:14-18: Percentages are not allowed here
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:462:15-19: Percentages are not allowed here
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:541:3-10: No property named "display"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:542:3-6: No property named "gap"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:671:3-8: No property named "width"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:674:3-11: No property named "overflow"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:701:3-13: No property named "text-align"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:04.697: Theme parser error: <data>:769:3-12: No property named "max-width"
+
+(gjs:1724030): Gtk-WARNING **: 16:02:29.271: Broken accounting of active state for widget 0x56473fe4cc00(AstalWindow)
+
+(gjs:1724030): Gtk-WARNING **: 16:20:13.265: Broken accounting of active state for widget 0x56473fe4cc00(AstalWindow)
+
+(gjs:1724030): Gtk-WARNING **: 16:21:31.113: Broken accounting of active state for widget 0x56473fe4cc00(AstalWindow)
+
+(gjs:1724030): Gtk-WARNING **: 16:21:39.011: Broken accounting of active state for widget 0x56473fe4cc00(AstalWindow)
+ags-Message: 16:22:45.230: Left-click on: (empty)
+ags-Message: 16:22:46.855: Left-click on: (empty)
+ags-Message: 16:22:47.035: Left-click on: (empty)
+ags-Message: 16:22:47.700: Left-click on: (empty)
+ags-Message: 16:22:48.595: Left-click on: (empty)
+ags-Message: 16:22:49.315: Right-click on: (empty)
+ags-Message: 16:22:49.316: ================================================================================
+ags-Message: 16:22:49.316: >>> showTrayMenu called (DBus GetLayout version)
+ags-Message: 16:22:49.316:   item_id: :1.22/org/ayatana/NotificationItem/proton_vpn_app
+ags-Message: 16:22:49.316:   menu_path: /org/ayatana/NotificationItem/proton_vpn_app/Menu
+ags-Message: 16:22:49.316: 🔌 Calling GetLayout on DBus:
+ags-Message: 16:22:49.316:   Bus name: :1.22
+ags-Message: 16:22:49.317:   Object path: /org/ayatana/NotificationItem/proton_vpn_app/Menu
+ags-Message: 16:22:49.318: ✅ GetLayout returned successfully!
+ags-Message: 16:22:49.318:   Revision: 2
+ags-Message: 16:22:49.318: 📦 Parsing layout:
+ags-Message: 16:22:49.318:   Root ID: 0
+ags-Message: 16:22:49.318:   Children count: 7
+ags-Message: 16:22:49.319:   ✓ Item 2: "Quick Connect" (children: 0)
+ags-Message: 16:22:49.319:   ✓ Item 6: "Show" (children: 0)
+ags-Message: 16:22:49.319:   ✓ Item 8: "Quit" (children: 0)
+ags-Message: 16:22:49.319: 📋 Extracted 3 menu items via GetLayout
+ags-Message: 16:22:49.319: Got 3 menu items from GetLayout
+ags-Message: 16:22:49.319: Extracted busName: :1.22
+ags-Message: 16:22:49.319: Extracted menuPath: /org/ayatana/NotificationItem/proton_vpn_app/Menu
+ags-Message: 16:22:49.319: Setting margin right: 157
+ags-Message: 16:22:49.319: Building menu UI...
+ags-Message: 16:22:49.320: Menu UI built
+ags-Message: 16:22:49.320: Setting window visible to true...
+ags-Message: 16:22:49.334: Window shown
+ags-Message: 16:22:49.334: <<< showTrayMenu completed successfully
+ags-Message: 16:22:51.531: 🔔 Activating menu item ID: 6 (Show)
+ags-Message: 16:22:51.532: ✅ Event sent for item 6
+
+(gjs:1724030): Gtk-WARNING **: 16:23:29.332: Broken accounting of active state for widget 0x56473fe4cc00(AstalWindow)
+
+(gjs:1724030): Gtk-WARNING **: 16:25:11.228: Broken accounting of active state for widget 0x56473fe4cc00(AstalWindow)
+
+(gjs:1724030): Gtk-WARNING **: 16:26:34.226: Broken accounting of active state for widget 0x56473fe4cc00(AstalWindow)
+ags-Message: 16:27:11.573: 📬 New notification: Impossible d'obtenir les informations secrètes pour eduroam (ID: 22)
+ags-Message: 16:27:11.609:   📍 Popup created at yOffset=0px
+ags-Message: 16:27:12.884:   ⏸️  Paused auto-dismiss for notification 22
+ags-Message: 16:27:13.017:   ▶️  Resumed auto-dismiss for notification 22
+ags-Message: 16:27:13.479:   ⏸️  Paused auto-dismiss for notification 22
+ags-Message: 16:27:14.304:   ▶️  Resumed auto-dismiss for notification 22
+ags-Message: 16:27:16.609:   ❌ Dismissing popup 22
+ags-Message: 16:27:19.304:   ⏱️  Auto-dismissing notification 22
+
+(gjs:1724030): Gtk-WARNING **: 16:27:52.112: GtkText - did not receive a focus-out event.
+If you handle this event, you must return
+GDK_EVENT_PROPAGATE so the default handler
+gets the event as well
+ags-Message: 16:27:54.079: 📬 New notification: Thunderbird (ID: 23)
+ags-Message: 16:27:54.094:   📍 Popup created at yOffset=0px
+
+(gjs:1724030): Gtk-WARNING **: 16:27:57.678: Broken accounting of active state for widget 0x56473fe4cc00(AstalWindow)
+ags-Message: 16:27:59.094:   ⏱️  Auto-dismissing notification 23
+ags-Message: 16:27:59.095:   ❌ Dismissing popup 23
+
+** (gjs:1724030): CRITICAL **: 16:31:34.803: astal_network_access_point_get_bandwidth: assertion 'self != NULL' failed
+
+** (gjs:1724030): CRITICAL **: 16:31:34.803: astal_network_access_point_get_frequency: assertion 'self != NULL' failed
+
+** (gjs:1724030): CRITICAL **: 16:31:34.803: astal_network_access_point_get_strength: assertion 'self != NULL' failed
+
+** (gjs:1724030): CRITICAL **: 16:31:34.803: astal_network_access_point_get_ssid: assertion 'self != NULL' failed
+
+(gjs:1724030): GLib-GObject-CRITICAL **: 16:31:34.803: invalid (NULL) pointer instance
+
+(gjs:1724030): GLib-GObject-CRITICAL **: 16:31:34.803: g_signal_connect_object: assertion 'G_TYPE_CHECK_INSTANCE (instance)' failed
+
+(gjs:1724030): Gtk-WARNING **: 16:33:51.569: Broken accounting of active state for widget 0x56473fe4cc00(AstalWindow)
+
+(gjs:1724030): Gtk-WARNING **: 16:42:16.233: Broken accounting of active state for widget 0x56473fe4cc00(AstalWindow)
+
+** (gjs:1724030): CRITICAL **: 16:43:05.316: astal_network_access_point_get_bandwidth: assertion 'self != NULL' failed
+
+** (gjs:1724030): CRITICAL **: 16:43:05.316: astal_network_access_point_get_frequency: assertion 'self != NULL' failed
+
+** (gjs:1724030): CRITICAL **: 16:43:05.316: astal_network_access_point_get_strength: assertion 'self != NULL' failed
+
+** (gjs:1724030): CRITICAL **: 16:43:05.317: astal_network_access_point_get_ssid: assertion 'self != NULL' failed
+
+(gjs:1724030): GLib-GObject-CRITICAL **: 16:43:05.317: invalid (NULL) pointer instance
+
+(gjs:1724030): GLib-GObject-CRITICAL **: 16:43:05.317: g_signal_connect_object: assertion 'G_TYPE_CHECK_INSTANCE (instance)' failed
+ags-Message: 16:46:39.980:   🔔 Notification 23 resolved externally
+ags-Message: 16:46:39.988: 📬 New notification: Thunderbird (ID: 24)
+ags-Message: 16:46:40.006:   📍 Popup created at yOffset=0px
+ags-Message: 16:46:45.006:   ⏱️  Auto-dismissing notification 24
+ags-Message: 16:46:45.006:   ❌ Dismissing popup 24
+ags-Message: 16:53:17.783:   🔔 Notification 24 resolved externally
+ags-Message: 16:53:17.791: 📬 New notification: Thunderbird (ID: 25)
+ags-Message: 16:53:17.811:   📍 Popup created at yOffset=0px
+ags-Message: 16:53:22.811:   ⏱️  Auto-dismissing notification 25
+ags-Message: 16:53:22.811:   ❌ Dismissing popup 25
+
+** (gjs:1724030): CRITICAL **: 16:56:01.876: astal_network_access_point_get_bandwidth: assertion 'self != NULL' failed
+
+** (gjs:1724030): CRITICAL **: 16:56:01.876: astal_network_access_point_get_frequency: assertion 'self != NULL' failed
+
+** (gjs:1724030): CRITICAL **: 16:56:01.876: astal_network_access_point_get_strength: assertion 'self != NULL' failed
+
+** (gjs:1724030): CRITICAL **: 16:56:01.876: astal_network_access_point_get_ssid: assertion 'self != NULL' failed
+
+(gjs:1724030): GLib-GObject-CRITICAL **: 16:56:01.876: invalid (NULL) pointer instance
+
+(gjs:1724030): GLib-GObject-CRITICAL **: 16:56:01.876: g_signal_connect_object: assertion 'G_TYPE_CHECK_INSTANCE (instance)' failed
+
+** (gjs:1724030): CRITICAL **: 16:57:06.395: wifi.vala:109: Scanning not allowed while unavailable
+
+(gjs:1724030): Gtk-WARNING **: 17:56:38.463: Broken accounting of active state for widget 0x56473fe4cc00(AstalWindow)
+^C
+ ✘ leto@letoarch  ~  ags run
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.865: Theme parser error: gtk.css:2:1-31: Failed to import: Erreur lors de l’ouverture du fichier /home/leto/.config/gtk-4.0/libadwaita.css : Aucun fichier ou dossier de ce nom
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.865: Theme parser error: gtk.css:3:1-38: Failed to import: Erreur lors de l’ouverture du fichier /home/leto/.config/gtk-4.0/libadwaita-tweaks.css : Aucun fichier ou dossier de ce nom
+
+(gjs:1746786): Adwaita-WARNING **: 17:56:51.901: Using GtkSettings:gtk-application-prefer-dark-theme with libadwaita is unsupported. Please use AdwStyleManager:color-scheme instead.
+Gjs-Console-Message: 17:56:51.962: 📄 Loading config from: /home/leto/.config/ags/config.conf
+Gjs-Console-Message: 17:56:51.965: ✅ Config loaded successfully
+Gjs-Console-Message: 17:56:51.989: 📚 Loaded 5 existing notifications from history (sorted by time)
+Gjs-Console-Message: 17:56:51.989: ✅ NotificationManager initialized
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.989: Theme parser error: <data>:9:3-8: No property named "width"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.989: Theme parser error: <data>:11:3-11: No property named "overflow"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.989: Theme parser error: <data>:17:3-11: No property named "overflow"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.989: Theme parser error: <data>:32:3-17: No property named "pointer-events"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.989: Theme parser error: <data>:123:3-12: No property named "max-width"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.989: Theme parser error: <data>:138:3-11: No property named "overflow"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.989: Theme parser error: <data>:142:3-11: No property named "overflow"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.989: Theme parser error: <data>:162:3-12: No property named "max-width"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.989: Theme parser error: <data>:163:3-13: No property named "max-height"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.989: Theme parser error: <data>:296:3-25: No property named "-webkit-font-smoothing"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.989: Theme parser error: <data>:297:3-26: No property named "-moz-osx-font-smoothing"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.989: Theme parser error: <data>:298:3-17: No property named "text-rendering"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.990: Theme parser error: <data>:455:14-18: Percentages are not allowed here
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.990: Theme parser error: <data>:456:15-19: Percentages are not allowed here
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.990: Theme parser error: <data>:461:14-18: Percentages are not allowed here
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.990: Theme parser error: <data>:462:15-19: Percentages are not allowed here
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.990: Theme parser error: <data>:541:3-10: No property named "display"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.990: Theme parser error: <data>:542:3-6: No property named "gap"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.990: Theme parser error: <data>:671:3-8: No property named "width"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.990: Theme parser error: <data>:674:3-11: No property named "overflow"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.990: Theme parser error: <data>:701:3-13: No property named "text-align"
+
+(gjs:1746786): Gtk-WARNING **: 17:56:51.990: Theme parser error: <data>:769:3-12: No property named "max-width"
+
+(gjs:1746786): ags-CRITICAL **: 17:57:29.921: Failed to connect to network: Error: Error: Connection activation failed: L'activation de la nouvelle connexion a été mise en file d'attente.
+../../../../usr/share/ags/js/lib/process.ts/execAsyncv/</<@file:///run/user/1000/ags.js:2575:24
+_init/GLib.MainLoop.prototype.runAsync/</<@resource:///org/gnome/gjs/modules/core/overrides/GLib.js:263:34
+  
+
+(gjs:1746786): Gtk-WARNING **: 17:57:36.038: Broken accounting of active state for widget 0x55e2ff5a8c40(AstalWindow)
+
+(gjs:1746786): ags-CRITICAL **: 17:58:20.509: Failed to connect to network: Error: Error: Connection activation failed: Le réseau Wi-Fi est introuvable.
+../../../../usr/share/ags/js/lib/process.ts/execAsyncv/</<@file:///run/user/1000/ags.js:2575:24
+_init/GLib.MainLoop.prototype.runAsync/</<@resource:///org/gnome/gjs/modules/core/overrides/GLib.js:263:34
+  
+
+(gjs:1746786): Gtk-WARNING **: 17:58:23.555: Broken accounting of active state for widget 0x55e2ff5a8c40(AstalWindow)
+
+** (gjs:1746786): CRITICAL **: 18:00:09.103: astal_network_access_point_get_bandwidth: assertion 'self != NULL' failed
+
+** (gjs:1746786): CRITICAL **: 18:00:09.103: astal_network_access_point_get_frequency: assertion 'self != NULL' failed
+
+** (gjs:1746786): CRITICAL **: 18:00:09.103: astal_network_access_point_get_strength: assertion 'self != NULL' failed
+
+** (gjs:1746786): CRITICAL **: 18:00:09.103: astal_network_access_point_get_ssid: assertion 'self != NULL' failed
+
+(gjs:1746786): GLib-GObject-CRITICAL **: 18:00:09.103: invalid (NULL) pointer instance
+
+(gjs:1746786): GLib-GObject-CRITICAL **: 18:00:09.103: g_signal_connect_object: assertion 'G_TYPE_CHECK_INSTANCE (instance)' failed
+
+(gjs:1746786): Gtk-WARNING **: 18:15:28.938: Broken accounting of active state for widget 0x55e2ff5a8c40(AstalWindow)
+ags-Message: 18:15:47.840: 📬 New notification: Impossible d'obtenir les informations secrètes pour eduroam (ID: 26)
+ags-Message: 18:15:47.880:   📍 Popup created at yOffset=0px
+ags-Message: 18:15:49.098:   ⏸️  Paused auto-dismiss for notification 26
+ags-Message: 18:15:52.880:   ❌ Dismissing popup 26
+ags-Message: 18:16:33.834: 📬 New notification: Impossible d'obtenir les informations secrètes pour wifi-campus (ID: 27)
+ags-Message: 18:16:33.876:   📍 Popup created at yOffset=0px
+ags-Message: 18:16:37.481: 📬 New notification: Impossible d'obtenir les informations secrètes pour eduroam (ID: 28)
+ags-Message: 18:16:37.529:   📍 Popup created at yOffset=112px
+ags-Message: 18:16:38.877:   ⏱️  Auto-dismissing notification 27
+ags-Message: 18:16:38.877:   ❌ Dismissing popup 27
+ags-Message: 18:16:42.530:   ⏱️  Auto-dismissing notification 28
+ags-Message: 18:16:42.530:   ❌ Dismissing popup 28
+
+(gjs:1746786): Gtk-WARNING **: 18:17:23.957: Broken accounting of active state for widget 0x55e2ff5a8c40(AstalWindow)
+
+(gjs:1746786): Gtk-WARNING **: 18:18:08.265: Broken accounting of active state for widget 0x55e2ff5a8c40(AstalWindow)
+ags-Message: 18:18:50.618: 📬 New notification: Impossible d'obtenir les informations secrètes pour eduroam (ID: 29)
+ags-Message: 18:18:50.659:   📍 Popup created at yOffset=0px
+ags-Message: 18:18:53.227:   ⏸️  Paused auto-dismiss for notification 29
+ags-Message: 18:18:55.549:   ❌ Dismissing popup 29
+ags-Message: 18:19:23.209: 📬 New notification: Impossible d'obtenir les informations secrètes pour wifi-campus (ID: 30)
+ags-Message: 18:19:23.253:   📍 Popup created at yOffset=0px
+ags-Message: 18:19:23.904:   ⏸️  Paused auto-dismiss for notification 30
+ags-Message: 18:19:25.385:   ❌ Dismissing popup 30
+ags-Message: 18:21:49.523: 📬 New notification: Impossible d'obtenir les informations secrètes pour eduroam (ID: 31)
+ags-Message: 18:21:49.569:   📍 Popup created at yOffset=0px
+ags-Message: 18:21:54.569:   ⏱️  Auto-dismissing notification 31
+ags-Message: 18:21:54.570:   ❌ Dismissing popup 31
+ags-Message: 18:22:52.454: 📬 New notification: Impossible d'obtenir les informations secrètes pour wifi-campus (ID: 32)
+ags-Message: 18:22:52.495:   📍 Popup created at yOffset=0px
+ags-Message: 18:22:53.430: 📬 New notification: Impossible d'obtenir les informations secrètes pour eduroam (ID: 33)
+ags-Message: 18:22:53.478:   📍 Popup created at yOffset=112px
+ags-Message: 18:22:54.668:   ⏸️  Paused auto-dismiss for notification 32
+ags-Message: 18:22:54.864:   ▶️  Resumed auto-dismiss for notification 32
+ags-Message: 18:22:54.865:   ⏸️  Paused auto-dismiss for notification 33
+ags-Message: 18:22:54.871:   ▶️  Resumed auto-dismiss for notification 33
+ags-Message: 18:22:57.495:   ❌ Dismissing popup 32
+ags-Message: 18:22:58.479:   ❌ Dismissing popup 33
+ags-Message: 18:22:59.865:   ⏱️  Auto-dismissing notification 32
+ags-Message: 18:22:59.871:   ⏱️  Auto-dismissing notification 33
+ags-Message: 18:23:14.018: 📬 New notification: Impossible d'obtenir les informations secrètes pour eduroam (ID: 34)
+ags-Message: 18:23:14.063:   📍 Popup created at yOffset=0px
+ags-Message: 18:23:19.063:   ⏱️  Auto-dismissing notification 34
+ags-Message: 18:23:19.063:   ❌ Dismissing popup 34
+
+(gjs:1746786): Gtk-WARNING **: 18:24:29.312: Broken accounting of active state for widget 0x55e2ff8c8030(AstalWindow)
+ags-Message: 18:24:47.554: 📬 New notification: Impossible d'obtenir les informations secrètes pour eduroam (ID: 35)
+ags-Message: 18:24:47.600:   📍 Popup created at yOffset=0px
+ags-Message: 18:24:52.600:   ⏱️  Auto-dismissing notification 35
+ags-Message: 18:24:52.601:   ❌ Dismissing popup 35
+
+(gjs:1746786): Gtk-WARNING **: 18:26:02.213: Broken accounting of active state for widget 0x55e2ff5a8c40(AstalWindow)
+ags-Message: 18:26:20.882: 📬 New notification: Impossible d'obtenir les informations secrètes pour wifi-campus (ID: 36)
+ags-Message: 18:26:20.930:   📍 Popup created at yOffset=0px
+ags-Message: 18:26:22.401: 📬 New notification: Impossible d'obtenir les informations secrètes pour eduroam (ID: 37)
+ags-Message: 18:26:22.452:   📍 Popup created at yOffset=112px
+ags-Message: 18:26:23.185:   ⏸️  Paused auto-dismiss for notification 37
+ags-Message: 18:26:23.674:   ▶️  Resumed auto-dismiss for notification 37
+ags-Message: 18:26:25.930:   ⏱️  Auto-dismissing notification 36
+ags-Message: 18:26:25.931:   ❌ Dismissing popup 36
+ags-Message: 18:26:27.452:   ❌ Dismissing popup 37
+ags-Message: 18:26:28.675:   ⏱️  Auto-dismissing notification 37
+ags-Message: 18:26:40.026: 📬 New notification: Impossible d'obtenir les informations secrètes pour eduroam (ID: 38)
+ags-Message: 18:26:40.075:   📍 Popup created at yOffset=0px
+ags-Message: 18:26:45.075:   ⏱️  Auto-dismissing notification 38
+ags-Message: 18:26:45.076:   ❌ Dismissing popup 38
+ags-Message: 18:27:04.243: 📬 New notification: Thunderbird (ID: 39)
+ags-Message: 18:27:04.261:   📍 Popup created at yOffset=0px
+ags-Message: 18:27:08.429:   ⏸️  Paused auto-dismiss for notification 39
+ags-Message: 18:27:09.262:   ❌ Dismissing popup 39
+
+(gjs:1746786): Gdk-WARNING **: 21:49:14.823: vkAcquireNextImageKHR(): A swapchain no longer matches the surface properties exactly, but can still be used to present to the surface successfully. (VK_SUBOPTIMAL_KHR) (1000001003)
+^C
+ ✘ leto@letoarch  ~  ags run
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.038: Theme parser error: gtk.css:2:1-31: Failed to import: Erreur lors de l’ouverture du fichier /home/leto/.config/gtk-4.0/libadwaita.css : Aucun fichier ou dossier de ce nom
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.038: Theme parser error: gtk.css:3:1-38: Failed to import: Erreur lors de l’ouverture du fichier /home/leto/.config/gtk-4.0/libadwaita-tweaks.css : Aucun fichier ou dossier de ce nom
+
+(gjs:1760162): Adwaita-WARNING **: 21:49:37.062: Using GtkSettings:gtk-application-prefer-dark-theme with libadwaita is unsupported. Please use AdwStyleManager:color-scheme instead.
+Gjs-Console-Message: 21:49:37.102: 📄 Loading config from: /home/leto/.config/ags/config.conf
+Gjs-Console-Message: 21:49:37.104: ✅ Config loaded successfully
+Gjs-Console-Message: 21:49:37.121: 📚 Loaded 18 existing notifications from history (sorted by time)
+Gjs-Console-Message: 21:49:37.121: ✅ NotificationManager initialized
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.121: Theme parser error: <data>:9:3-8: No property named "width"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:11:3-11: No property named "overflow"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:17:3-11: No property named "overflow"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:32:3-17: No property named "pointer-events"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:123:3-12: No property named "max-width"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:138:3-11: No property named "overflow"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:142:3-11: No property named "overflow"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:162:3-12: No property named "max-width"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:163:3-13: No property named "max-height"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:296:3-25: No property named "-webkit-font-smoothing"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:297:3-26: No property named "-moz-osx-font-smoothing"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:298:3-17: No property named "text-rendering"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:455:14-18: Percentages are not allowed here
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:456:15-19: Percentages are not allowed here
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:461:14-18: Percentages are not allowed here
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:462:15-19: Percentages are not allowed here
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:541:3-10: No property named "display"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:542:3-6: No property named "gap"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:671:3-8: No property named "width"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:674:3-11: No property named "overflow"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:701:3-13: No property named "text-align"
+
+(gjs:1760162): Gtk-WARNING **: 21:49:37.122: Theme parser error: <data>:769:3-12: No property named "max-width"
+ags-Message: 22:11:08.474: Right-click on: (empty)
+ags-Message: 22:11:08.475: ================================================================================
+ags-Message: 22:11:08.475: >>> showTrayMenu called (DBus GetLayout version)
+ags-Message: 22:11:08.475:   item_id: :1.22/org/ayatana/NotificationItem/proton_vpn_app
+ags-Message: 22:11:08.476:   menu_path: /org/ayatana/NotificationItem/proton_vpn_app/Menu
+ags-Message: 22:11:08.476: 🔌 Calling GetLayout on DBus:
+ags-Message: 22:11:08.476:   Bus name: :1.22
+ags-Message: 22:11:08.476:   Object path: /org/ayatana/NotificationItem/proton_vpn_app/Menu
+ags-Message: 22:11:08.478: ✅ GetLayout returned successfully!
+ags-Message: 22:11:08.478:   Revision: 2
+ags-Message: 22:11:08.478: 📦 Parsing layout:
+ags-Message: 22:11:08.478:   Root ID: 0
+ags-Message: 22:11:08.478:   Children count: 7
+ags-Message: 22:11:08.478:   ✓ Item 2: "Quick Connect" (children: 0)
+ags-Message: 22:11:08.478:   ✓ Item 6: "Show" (children: 0)
+ags-Message: 22:11:08.479:   ✓ Item 8: "Quit" (children: 0)
+ags-Message: 22:11:08.479: 📋 Extracted 3 menu items via GetLayout
+ags-Message: 22:11:08.479: Got 3 menu items from GetLayout
+ags-Message: 22:11:08.479: Extracted busName: :1.22
+ags-Message: 22:11:08.479: Extracted menuPath: /org/ayatana/NotificationItem/proton_vpn_app/Menu
+ags-Message: 22:11:08.479: Setting margin right: 76
+ags-Message: 22:11:08.479: Building menu UI...
+ags-Message: 22:11:08.480: Menu UI built
+ags-Message: 22:11:08.480: Setting window visible to true...
+ags-Message: 22:11:08.500: Window shown
+ags-Message: 22:11:08.501: <<< showTrayMenu completed successfully
+ags-Message: 22:11:09.554: 🔔 Activating menu item ID: 2 (Quick Connect)
+ags-Message: 22:11:09.555: ✅ Event sent for item 2
+
+(gjs:1760162): Gtk-WARNING **: 22:24:08.852: Broken accounting of active state for widget 0x55f453e1cbc0(AstalWindow)
+
+(gjs:1760162): Gtk-WARNING **: 22:49:20.193: Broken accounting of active state for widget 0x55f453e1cbc0(AstalWindow)
+ags-Message: 01:36:17.739: Left-click on: Il y a 3 mises à jour disponibles !

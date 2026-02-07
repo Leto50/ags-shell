@@ -1,0 +1,92 @@
+# AGS Configuration File
+# Copy from config.conf.example and customize
+
+# ============================================================================
+# BAR
+# ============================================================================
+[bar]
+# OS icon (Nerd Font character)
+# Examples: "", "", "", ""
+os_icon = "start-here-symbolic"
+
+# Window margins (should match your Hyprland gaps_out)
+margin_top = 15
+margin_horizontal = 15
+
+# Spacing between widgets (pixels)
+widget_spacing = 4
+
+# ============================================================================
+# WORKSPACES
+# ============================================================================
+[workspaces]
+max_displayed = 20
+button_spacing = 4
+
+# ============================================================================
+# SYSTEM TRAY
+# ============================================================================
+[system_tray]
+icon_spacing = 2
+
+# ============================================================================
+# DATE & TIME FORMAT
+# ============================================================================
+[datetime]
+# Locale for date/time formatting
+# Examples: "fr-FR" (French), "en-US" (English), "de-DE" (German), "es-ES" (Spanish)
+locale = "fr-FR"
+
+# TIME FORMAT
+# Current example result: "14:30"
+# hour: "numeric" (14) or "2-digit" (14)
+# minute: "numeric" (5) or "2-digit" (05)
+# second: "" (hidden), "numeric" (7), or "2-digit" (07)
+time_hour = "2-digit"
+time_minute = "2-digit"
+time_second = ""
+
+# DATE FORMAT
+# Current example result: "ven. 19 déc"
+# weekday: "" (hidden), "narrow" (V), "short" (ven.), "long" (vendredi)
+# day: "numeric" (5) or "2-digit" (05)
+# month: "numeric" (12), "2-digit" (12), "short" (déc), "long" (décembre)
+# year: "" (hidden), "numeric" (2024), or "2-digit" (24)
+date_weekday = "short"
+date_day = "numeric"
+date_month = "short"
+date_year = ""
+
+# Spacing between date and time labels (pixels)
+label_spacing = 8
+
+# ============================================================================
+# MENUS
+# ============================================================================
+[menu]
+# Vertical spacing between bar and menus
+margin_top = 10
+
+# Horizontal margin for menus anchored to screen edges
+# Should match bar margins for alignment
+margin_right = 15
+margin_left = 15
+# ============================================================================
+# MEDIA PLAYER
+# ============================================================================
+[media_player]
+# Enable/disable Cava audio visualizer
+enable_cava = true
+
+# Visualizer style
+# Options: "catmull_rom" (smooth curve), "smooth" (simple curve), "bars" (vertical bars), "dots" (points)
+cava_style = "catmull_rom"
+
+# Visualizer color ("auto" uses theme color)
+cava_color = "auto"
+
+# Background blur radius (pixels)
+blur_radius = 22
+
+# Text scrolling speed (pixels per frame)
+scroll_speed = 0.4
