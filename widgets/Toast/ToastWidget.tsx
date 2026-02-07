@@ -80,7 +80,7 @@ export default function ToastContainer() {
             class="toast-window"
             name="toasts"
             namespace="toasts"
-            visible={true}
+            visible={toasts((list) => list.length > 0)}
             layer={Astal.Layer.OVERLAY}
             exclusivity={Astal.Exclusivity.NORMAL}
             anchor={Astal.WindowAnchor.BOTTOM | Astal.WindowAnchor.RIGHT}
@@ -93,9 +93,9 @@ export default function ToastContainer() {
                 valign={Gtk.Align.END}
                 halign={Gtk.Align.END}
             >
-                {toasts((toastList) =>
-                    toastList.map((toast) => <ToastItem key={toast.id} toast={toast} />)
-                )}
+                {toasts().map((toast) => (
+                    <ToastItem key={toast.id} toast={toast} />
+                ))}
             </box>
         </window>
     )

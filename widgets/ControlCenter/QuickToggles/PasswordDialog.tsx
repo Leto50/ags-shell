@@ -2,6 +2,7 @@ import { Gtk } from "ags/gtk4"
 import { logger } from "../../../lib/logger"
 import { createState } from "ags"
 import { execAsync } from "ags/process"
+import { toastManager } from "../../Toast/ToastManager"
 
 interface PasswordDialogProps {
     network: any  // State<WiFiAccessPoint> - AGS state wrapper
@@ -36,7 +37,11 @@ export function PasswordDialog({ network, onClose, onSuccess }: PasswordDialogPr
             // Connection failed
             logger.error("WiFi connection error:", error)
             setIsConnecting(false)
-            setErrorMessage("Incorrect password. Please try again.")
+            const errorMsg = "Incorrect password. Please try again."
+            setErrorMessage(errorMsg)
+
+            // Show toast for error (ensures visibility even if dialog closes)
+            toastManager.error(`Failed to connect to ${ssid}`, 5000)
 
             // Clean up failed connection attempt
             try {
