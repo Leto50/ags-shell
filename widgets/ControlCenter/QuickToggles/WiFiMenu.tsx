@@ -61,6 +61,14 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
             return
         }
 
+        // Validate SSID to prevent command injection
+        // SSID can contain spaces, hyphens, underscores, and alphanumeric
+        // But should not contain shell special characters
+        if (!/^[\w\s._-]+$/.test(ap.ssid)) {
+            logger.error("Invalid SSID format - potential security risk", { ssid: ap.ssid })
+            return
+        }
+
         if (ap.active) {
             return
         }

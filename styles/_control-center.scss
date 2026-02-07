@@ -1,32 +1,34 @@
 @use 'variables' as *;
+@use 'design-tokens' as *;
+
 window.control-center {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
+    background-color: rgba(0, 0, 0, $alpha-hover);
+    border-radius: $radius-lg;
 }
 
 .control-center-box {
-    border-radius: 12px;
-    background: gtkalpha($window_bg_color, 0.3);
-    width: 21.25rem; /* 340px / 16 = 21.25rem */
-    padding: 0.9375rem; /* 15px / 16 = 0.9375rem */
+    border-radius: $radius-lg;
+    background: gtkalpha($window_bg_color, $alpha-strong);
+    width: 21.25rem;
+    padding: $space-4;
     overflow: hidden;
 }
 
 .card {
-    background: gtkalpha($card_bg_color, 0.6);
-    border-radius: 0.5rem; /* 8px */
+    background: gtkalpha($card_bg_color, $alpha-solid);
+    border-radius: $radius-md;
     overflow: hidden;
 }
 
 .card-padding {
-    padding: 0.9375rem; /* 15px */
+    padding: $space-4;
 }
 
 
 .caption-heading {
-    font-size: 0.75rem;
-    font-weight: 600;
-    opacity: 0.6;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    opacity: $alpha-solid;
     letter-spacing: 0.02em;
 }
 
@@ -47,7 +49,7 @@ button {
     background: transparent;
     border: none;
     color: inherit;
-    transition: all 150ms ease-out;
+    transition: $transition-fast;
 }
 
 calendar button {
@@ -55,15 +57,15 @@ calendar button {
 }
 
 button:hover {
-    background: gtkalpha($window_fg_color, 0.1);
+    background: gtkalpha($window_fg_color, $alpha-hover);
 }
 
 button.active {
-    background: gtkalpha($accent_bg_color, 0.2);
+    background: gtkalpha($accent_bg_color, $alpha-selected);
 }
 
 button:active {
-    background: gtkalpha($window_fg_color, 0.15);
+    background: gtkalpha($window_fg_color, $alpha-active);
 }
 
 button:focus-visible {
@@ -73,62 +75,62 @@ button:focus-visible {
 
 button.circular {
     border-radius: 50%;
-    min-width: 2.5rem;
-    min-height: 2.5rem;
+    min-width: $size-button-lg;
+    min-height: $size-button-lg;
     padding: 0;
 }
 
 scale {
   all: unset;
-  min-height: 1.5rem;
+  min-height: $space-6;
   margin-left: 0;
   margin-right: 0;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: $space-2;
+  margin-bottom: $space-2;
   padding: 0;
 }
 
 scale:focus-visible {
   outline: 2px solid $accent_bg_color;
   outline-offset: 2px;
-  border-radius: 0.75rem;
+  border-radius: $radius-lg;
 }
 
 scale trough {
-  min-height: 1.5rem;
-  border-radius: 0.75rem;
-  background: gtkalpha($window_fg_color, 0.1);
+  min-height: $space-6;
+  border-radius: $radius-lg;
+  background: gtkalpha($window_fg_color, $alpha-hover);
   margin-left: 0;
   margin-right: 0;
   padding: 0;
 }
 
 scale highlight {
-  min-height: 1.5rem;
-  border-top-left-radius: 0.75rem;
-  border-bottom-left-radius: 0.75rem;
+  min-height: $space-6;
+  border-top-left-radius: $radius-lg;
+  border-bottom-left-radius: $radius-lg;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   background: linear-gradient(90deg, $accent_bg_color, gtkshade($accent_bg_color, 1.2));
 }
 
 scale slider {
-  min-width: 1.5rem;
-  min-height: 1.5rem;
+  min-width: $space-6;
+  min-height: $space-6;
   border-radius: 50%;
   background: gtkmix($accent_bg_color, $window_fg_color, 0.95);
-  box-shadow: 0 2px 8px gtkalpha($window_fg_color, 0.2);
+  box-shadow: $shadow-md;
 }
 
 .volume-icon,
 .brightness-icon {
-  margin-left: 0.5rem;
-  font-size: 1.25rem;
+  margin-left: $space-2;
+  font-size: $font-size-lg;
 }
 
 .control-section {
-    transition: all 200ms ease-in-out;
-    max-width: 19.375rem; /* 310px / 16 */
+    transition: $transition-opacity;
+    max-width: 19.375rem;
 }
 
 .player-info {
@@ -138,7 +140,7 @@ scale slider {
 .control-section > image {
     margin: 0;
     padding: 0;
-    border-radius: 0.5rem; /* 8px */
+    border-radius: $radius-md;
 }
 
 .player-info scrolledwindow {
@@ -160,11 +162,11 @@ scale slider {
 
 .control-section image,
 .control-section label {
-    transition: opacity 200ms ease-in-out;
+    transition: $transition-opacity;
 }
 
 .album-cover-box {
-    border-radius: 0.5rem; /* 8px */
+    border-radius: $radius-md;
     min-width: 52px;
     min-height: 52px;
     max-width: 52px;

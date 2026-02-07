@@ -1,32 +1,34 @@
 @use 'variables' as *;
+@use 'design-tokens' as *;
+
 window.bar {
     background-color: rgba(0, 0, 0, 0);
 }
 
 .bar-container {
-    background: gtkalpha($window_bg_color, 0.3);
-    padding: 0.3rem 0.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 3px gtkalpha($window_fg_color, 0.12);
+    background: gtkalpha($window_bg_color, $alpha-strong);
+    padding: $space-2 $space-2;
+    border-radius: $radius-md;
+    box-shadow: $shadow-sm;
 }
 
 .bar-button {
     padding: 0;
-    border-radius: 0.375rem;
+    border-radius: $radius-sm;
     margin: 0;
-    min-width: 1.75rem;
-    min-height: 1.75rem;
-    transition: all 150ms ease-out;
+    min-width: $size-button-sm;
+    min-height: $size-button-sm;
+    transition: $transition-fast;
     background: transparent;
     border: none;
 }
 
 .bar-button:hover {
-    background: gtkalpha($window_fg_color, 0.1);
+    background: gtkalpha($window_fg_color, $alpha-hover);
 }
 
 .bar-button:active {
-    background: gtkalpha($window_fg_color, 0.15);
+    background: gtkalpha($window_fg_color, $alpha-active);
 }
 
 .bar-button.app-menu-button label {
@@ -37,25 +39,25 @@ window.bar {
 }
 
 .bar-button.workspace {
-    min-height: 1.625rem;
+    min-height: $size-button-sm;
     padding: 0;
     margin: 0;
     border: none;
-    border-radius: 0.5rem;
-    transition: background 180ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-radius: $radius-md;
+    transition: $transition-background;
     background: transparent;
 }
 
 .bar-button.workspace:hover {
-    background: gtkalpha($window_fg_color, 0.08);
+    background: gtkalpha($window_fg_color, $alpha-hover);
 }
 
 .bar-button.workspace.active {
-    background: gtkalpha($accent_bg_color, 0.2);
+    background: gtkalpha($accent_bg_color, $alpha-selected);
 }
 
 .bar-button.workspace.active:hover {
-    background: gtkalpha($accent_bg_color, 0.25);
+    background: gtkalpha($accent_bg_color, $alpha-strong);
 }
 
 .bar-button.workspace .workspace-label,
@@ -63,10 +65,10 @@ window.bar {
     font-size: $bar-element-size;
     opacity: 0.8;
     font-family: "JetBrainsMono Nerd Font Propo";
-    font-weight: 500;
+    font-weight: $font-weight-medium;
     min-width: 0;
     min-height: 0;
-    margin: 0 0.1875rem;
+    margin: 0 $space-1;
     padding: 0 0.2em;
     line-height: 1;
     background-color: transparent;
@@ -82,33 +84,33 @@ window.bar {
 
 .bar-button.tray-item {
     margin: 0;
-    padding: 0.1rem;
+    padding: $space-1;
     min-width: unset;
     min-height: unset;
 }
 
 .bar-center {
-    padding: 0.25rem 0.625rem;
-    border-radius: 0.25rem;
+    padding: $space-1 $space-3;
+    border-radius: $radius-sm;
     background: transparent;
 }
 
 .bar-time {
-    font-weight: 500;
-    font-size: 0.8125rem;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-sm;
     letter-spacing: -0.01em;
 }
 
 .bar-date {
-    font-size: 0.75rem;
-    opacity: 0.6;
-    font-weight: 400;
-    margin-right: 0.375rem;
+    font-size: $font-size-xs;
+    opacity: $alpha-solid;
+    font-weight: $font-weight-normal;
+    margin-right: $space-2;
 }
 
 .bar-system-tray {
-    padding: 0.125rem 0;
-    border-radius: 0.25rem;
+    padding: $space-1 0;
+    border-radius: $radius-sm;
     background: transparent;
 }
 
@@ -138,15 +140,15 @@ window.bar {
 }
 
 .control-center-toggle:hover {
-    background: gtkalpha($window_fg_color, 0.1);
+    background: gtkalpha($window_fg_color, $alpha-hover);
 }
 
 .control-center-toggle.active {
-    background: gtkalpha($window_fg_color, 0.15);
+    background: gtkalpha($window_fg_color, $alpha-active);
 }
 
 .control-center-toggle.active:hover {
-    background: gtkalpha($window_fg_color, 0.2);
+    background: gtkalpha($window_fg_color, $alpha-selected);
 }
 
 /* Remove default MenuButton styling */
@@ -161,25 +163,25 @@ menubutton.control-center-toggle > button {
     box-shadow: none;
     outline: none;
     background: transparent;
-    padding: 0.25rem;
+    padding: $space-1;
 }
 
 menubutton.control-center-toggle > button:hover {
-    background: gtkalpha($window_fg_color, 0.1);
+    background: gtkalpha($window_fg_color, $alpha-hover);
 }
 
 menubutton.control-center-toggle > button:active {
-    background: gtkalpha($window_fg_color, 0.15);
+    background: gtkalpha($window_fg_color, $alpha-active);
 }
 
 /* Remove default Popover styling */
 #control-center {
-    background: gtkalpha($window_bg_color, 0.3);
+    background: gtkalpha($window_bg_color, $alpha-strong);
     border: none;
     box-shadow: none;
     padding: 0;
     margin: 0;
-    border-radius: 12px;
+    border-radius: $radius-lg;
 }
 
 #control-center > contents {

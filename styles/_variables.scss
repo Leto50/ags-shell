@@ -3,6 +3,8 @@
 // ============================================================================
 // Wrapper functions to use GTK CSS functions in SCSS without conflicts
 @use "sass:string";
+@use 'design-tokens' as *;
+
 @function gtkalpha($c, $a) { @return string.unquote("alpha(#{$c}, #{$a})"); }
 @function gtkmix($c1, $c2, $r) { @return string.unquote("mix(#{$c1}, #{$c2}, #{$r})"); }
 @function gtkshade($c, $s) { @return string.unquote("shade(#{$c}, #{$s})"); }
@@ -27,6 +29,14 @@ $success_color: #{"@success_color"};
 
 // Bar element sizing - single source of truth
 $bar-element-size: 1.2em;
+
+// ============================================================================
+// SHADOWS (require GTK colors)
+// ============================================================================
+$shadow-sm: 0 1px 2px gtkalpha($window_fg_color, $alpha-hover);
+$shadow-md: 0 2px 4px gtkalpha($window_fg_color, $alpha-hover);
+$shadow-lg: 0 4px 8px gtkalpha($window_fg_color, $alpha-active);
+$shadow-xl: 0 8px 16px gtkalpha($window_fg_color, $alpha-selected);
 
 // ============================================================================
 

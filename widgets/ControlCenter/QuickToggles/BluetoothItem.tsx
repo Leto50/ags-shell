@@ -61,7 +61,7 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
             // Disconnect
             device.disconnect_device(() => {
                 const success = !device.connected
-                console.info(`Disconnection ${success ? "successful" : "failed"} for ${device.name}`)
+                logger.info(`Disconnection ${success ? "successful" : "failed"} for ${device.name}`)
                 if (!success) {
                     setErrorMessage("Failed to disconnect")
                 }
@@ -70,7 +70,7 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
             // Connect (already paired)
             device.connect_device(() => {
                 const success = device.connected
-                console.info(`Connection ${success ? "successful" : "failed"} for ${device.name}`)
+                logger.info(`Connection ${success ? "successful" : "failed"} for ${device.name}`)
                 if (!success) {
                     setErrorMessage("Failed to connect")
                 }
