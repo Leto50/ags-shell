@@ -1,4 +1,5 @@
 import { Gtk } from "ags/gtk4"
+import { logger } from "../../lib/logger"
 import { createPoll } from "ags/time"
 import { onCleanup } from "ags"
 import app from "ags/gtk4/app"
@@ -40,7 +41,7 @@ export default function DateTimeSection() {
                     if (!window) {
                         retryCount++
                         if (retryCount >= MAX_RETRIES) {
-                            console.error("NotificationCenter window not found after 5s, giving up")
+                            logger.error("NotificationCenter window not found after 5s, giving up")
                             return
                         }
                         // Window not ready yet, retry in a bit

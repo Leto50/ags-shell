@@ -6,6 +6,7 @@ import { interval } from "ags/time"
 import { execAsync } from "ags/process"
 import { NetworkItem } from "./NetworkItem"
 import { PasswordDialog } from "./PasswordDialog"
+import { logger } from "../../../lib/logger"
 
 interface WiFiMenuProps {
     onBack: () => void
@@ -30,7 +31,7 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
                 setSavedNetworks(saved)
             }
         } catch (err) {
-            console.error("Failed to load saved networks:", err)
+            logger.error("Failed to load saved networks:", err)
         }
     }
 
@@ -78,7 +79,7 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
                     await execAsync(["nmcli", "device", "wifi", "connect", ap.ssid])
                 }
             } catch (err: any) {
-                console.error("Failed to connect to network:", err)
+                logger.error("Failed to connect to network:", err)
             }
         }
     }
@@ -179,7 +180,7 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
                     hexpand={true}
                     onClicked={() => {
                         import("ags/process").then(({ execAsync }) => {
-                            execAsync(["nm-connection-editor"]).catch(console.error)
+                            execAsync(["nm-connection-editor"]).catch((err) => logger.error("Failed to open network editor:", err))
                         })
                     }}
                 >

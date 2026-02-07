@@ -1,4 +1,5 @@
 import { Astal, Gtk, Gdk } from "ags/gtk4"
+import { logger } from "../../lib/logger"
 import app from "ags/gtk4/app"
 import { createState, With } from "ags"
 import Bluetooth from "gi://AstalBluetooth"
@@ -52,7 +53,7 @@ export default function ControlCenter() {
                             } catch (err: any) {
                                 // Ignore "No discovery started" error (BlueZ bug or already stopped by cleanup)
                                 if (!err.message?.includes("No discovery started")) {
-                                    console.error("Failed to stop Bluetooth discovery:", err)
+                                    logger.error("Failed to stop Bluetooth discovery:", err)
                                 }
                             }
                         }

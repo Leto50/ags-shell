@@ -3,6 +3,7 @@ import { createBinding, createComputed, createState, createEffect } from "ags"
 import Bluetooth from "gi://AstalBluetooth"
 import Gio from "gi://Gio"
 import GLib from "gi://GLib"
+import { logger } from "../../../lib/logger"
 
 interface BluetoothItemProps {
     device: any
@@ -41,7 +42,7 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
             null
         )
 
-        console.log(`Successfully paired with ${device.name}`)
+        logger.debug(`Successfully paired with ${device.name}`)
     }
 
     const handleClick = async () => {
@@ -79,7 +80,7 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
                 setIsPairing(false)
 
                 // Debug: log full error to understand structure
-                console.log(`[DEBUG] Error:`, {
+                logger.debug(`Bluetooth pairing error:`, {
                     type: err.constructor?.name,
                     code: err.code,
                     domain: err.domain,
@@ -89,7 +90,7 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
 
                 // Check for GIO timeout error (locale-independent)
                 if (err.matches?.(Gio.IOErrorEnum, Gio.IOErrorEnum.TIMED_OUT)) {
-                    console.warn(`Device not reachable: ${device.name}`)
+                    logger.warn(`Device not reachable: ${device.name}`)
                     setErrorMessage("Device not reachable")
                 }
                 else {
@@ -97,19 +98,19 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
                     const remoteError = Gio.DBusError.get_remote_error(err)
 
                     if (remoteError === "org.bluez.Error.AuthenticationCanceled") {
-                        console.warn(`Pairing cancelled for ${device.name}`)
+                        logger.warn(`Pairing cancelled for ${device.name}`)
                         setErrorMessage("Pairing cancelled")
                     }
                     else if (remoteError === "org.bluez.Error.AuthenticationFailed") {
-                        console.warn(`Pairing rejected for ${device.name}`)
+                        logger.warn(`Pairing rejected for ${device.name}`)
                         setErrorMessage("Pairing rejected")
                     }
                     else if (remoteError === "org.bluez.Error.ConnectionAttemptFailed") {
-                        console.warn(`Device not reachable: ${device.name}`)
+                        logger.warn(`Device not reachable: ${device.name}`)
                         setErrorMessage("Device not reachable")
                     }
                     else {
-                        console.error(`Pairing failed for ${device.name}:`, err)
+                        logger.error(`Pairing failed for ${device.name}:`, err)
                         setErrorMessage("Pairing failed")
                     }
                 }
@@ -172,9 +173,9 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
 
         try {
             bluetooth.adapter.remove_device(device)
-            console.log(`Removed device: ${device.name}`)
+            logger.debug(`Removed device: ${device.name}`)
         } catch (err) {
-            console.error("Failed to remove device:", err)
+            logger.error("Failed to remove device:", err)
         }
     }
 

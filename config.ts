@@ -1,4 +1,5 @@
 import GLib from "gi://GLib"
+import { logger } from "./lib/logger"
 
 // Config structure with TypeScript types (camelCase - idiomatic)
 export interface Config {
@@ -395,19 +396,19 @@ function loadConfig(): Config {
     try {
         // Check if config file exists
         if (!GLib.file_test(configPath, GLib.FileTest.EXISTS)) {
-            console.log("📄 No config.conf found, using defaults")
+            logger.info("No config.conf found, using defaults")
             return DEFAULT_CONFIG
         }
 
         // Read config file
         const [success, contents] = GLib.file_get_contents(configPath)
         if (!success) {
-            console.error("❌ Failed to read config.conf")
+            logger.error("Failed to read config.conf")
             return DEFAULT_CONFIG
         }
 
         const configText = new TextDecoder().decode(contents)
-        console.log("📄 Loading config from:", configPath)
+        logger.info("Loading config from:", configPath)
 
         // Parse TOML (snake_case from file)
         const parsedConfig = parseSimpleToml(configText)
@@ -421,9 +422,9 @@ function loadConfig(): Config {
         // Validate merged configuration
         const validationErrors = validateConfig(config)
         if (validationErrors.length > 0) {
-            console.error("❌ Configuration validation errors:")
-            validationErrors.forEach(err => console.error(`   - ${err}`))
-            console.log("⚠️  Removing invalid fields, using defaults for those fields")
+            logger.error("Configuration validation errors:")
+            validationErrors.forEach(err => logger.error(`  - ${err}`))
+            logger.warn("Removing invalid fields, using defaults for those fields")
 
             // Extract field paths from error messages (e.g., "bar.osIcon must be..." → "bar.osIcon")
             const invalidFields = validationErrors.map(err => err.split(' ')[0])
@@ -435,11 +436,11 @@ function loadConfig(): Config {
             return deepMerge(DEFAULT_CONFIG, cleanedConfig) as Config
         }
 
-        console.log("✅ Config loaded successfully")
+        logger.info("Config loaded successfully")
         return config
 
     } catch (e) {
-        console.error("❌ Error loading config:", e)
+        logger.error("Error loading config:", e)
         return DEFAULT_CONFIG
     }
 }

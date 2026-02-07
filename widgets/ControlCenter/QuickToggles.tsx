@@ -1,4 +1,5 @@
 import { Gtk } from "ags/gtk4"
+import { logger } from "../../lib/logger"
 import Gio from "gi://Gio"
 import GLib from "gi://GLib"
 import { createBinding, createState } from "ags"
@@ -74,7 +75,7 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
                     setHypridleEnabled(false)
                 }
             } catch (err) {
-                console.error("Failed to inhibit idle:", err)
+                logger.error("Failed to inhibit idle:", err)
             }
         } else {
             // Enable idle: call D-Bus UnInhibit
@@ -105,7 +106,7 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
                     setInhibitCookie(null)
                     setHypridleEnabled(true)
                 } catch (err) {
-                    console.error("Failed to uninhibit idle:", err)
+                    logger.error("Failed to uninhibit idle:", err)
                 }
             }
         }
@@ -218,7 +219,7 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
                     <CardButton
                         className="card card-padding"
                         label_bind="bed-symbolic"
-                        on_click={() => execAsync(["sh", "-c", "systemctl suspend || loginctl suspend"]).catch(console.error)}
+                        on_click={() => execAsync(["sh", "-c", "systemctl suspend || loginctl suspend"]).catch((err) => logger.error("Failed to suspend:", err))}
                     />
                     <CardButton
                         className="card card-padding"

@@ -1,4 +1,5 @@
 import { Gtk } from "ags/gtk4"
+import { logger } from "../../../lib/logger"
 import { createState } from "ags"
 import { execAsync } from "ags/process"
 
@@ -33,7 +34,7 @@ export function PasswordDialog({ network, onClose, onSuccess }: PasswordDialogPr
             onClose()
         } catch (error) {
             // Connection failed
-            console.error("WiFi connection error:", error)
+            logger.error("WiFi connection error:", error)
             setIsConnecting(false)
             setErrorMessage("Incorrect password. Please try again.")
 

@@ -1,4 +1,5 @@
 import { Gtk } from "ags/gtk4"
+import { logger } from "../../lib/logger"
 import Notifd from "gi://AstalNotifd"
 import { notificationManager } from "./NotificationManager"
 import { config } from "../../config"
@@ -26,7 +27,7 @@ export default function NotificationItem({ notification }: NotificationItemProps
 
     // Dismiss notification
     const dismissNotification = () => {
-        console.log(`Dismissing notification ${notification.id}`)
+        logger.debug(`Dismissing notification ${notification.id}`)
 
         // Try to dismiss from AstalNotifd (might fail if already dismissed)
         try {
@@ -121,7 +122,7 @@ export default function NotificationItem({ notification }: NotificationItemProps
                                         notification.invoke(action.id)
                                         dismissNotification()
                                     } catch (err) {
-                                        console.error("Failed to invoke action:", err)
+                                        logger.error("Failed to invoke action:", err)
                                     }
                                 }}
                             >

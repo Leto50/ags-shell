@@ -4,6 +4,7 @@ import { config } from "../../config"
 import app from "ags/gtk4/app"
 import GObject from "gi://GObject"
 import { createRoot } from "ags"
+import { logger } from "../../lib/logger"
 
 interface ActivePopup {
     id: number
@@ -31,7 +32,7 @@ class NotificationManager {
 
     constructor() {
         if (!notification) {
-            console.warn("Notification service not available")
+            logger.warn("Notification service not available")
             return
         }
 
@@ -41,10 +42,10 @@ class NotificationManager {
             if (existingNotifs && existingNotifs.length > 0) {
                 // Sort by timestamp (newest first)
                 this.notificationHistory = [...existingNotifs].sort((a, b) => b.time - a.time)
-                console.log(`📚 Loaded ${existingNotifs.length} existing notifications from history (sorted by time)`)
+                logger.info(`Loaded ${existingNotifs.length} existing notifications from history`)
             }
         } catch (err) {
-            console.warn("Failed to load existing notifications:", err)
+            logger.warn("Failed to load existing notifications:", err)
         }
 
         // Listen for new notifications
@@ -52,7 +53,7 @@ class NotificationManager {
             this.handleNotification(id)
         })
 
-        console.log("✅ NotificationManager initialized")
+        logger.info("NotificationManager initialized")
     }
 
     private handleNotification(id: number): void {
@@ -60,11 +61,11 @@ class NotificationManager {
 
         const notif = notification.get_notification(id)
         if (!notif) {
-            console.warn(`Notification ${id} not found`)
+            logger.warn(`Notification ${id} not found`)
             return
         }
 
-        console.log(`📬 New notification: ${notif.summary} (ID: ${id})`)
+        logger.debug(`New notification: ${notif.summary}`, { id })
 
         // Add to history
         this.addToHistory(notif)
@@ -108,10 +109,10 @@ class NotificationManager {
                     dismissTimeout: timeout
                 })
 
-                console.log(`  📍 Popup created at yOffset=${yOffset}px`)
+                logger.debug(`Popup created at yOffset=${yOffset}px`)
             })
         }).catch(err => {
-            console.error("Failed to load NotificationPopup:", err)
+            logger.error("Failed to load NotificationPopup:", err)
         })
     }
 
@@ -166,7 +167,7 @@ class NotificationManager {
         const popup = this.activePopups.get(notifId)
         if (!popup) return
 
-        console.log(`  ❌ Dismissing popup ${notifId}`)
+        logger.debug(`Dismissing popup ${notifId}`)
 
         // Clear auto-dismiss timeout
         if (popup.dismissTimeout !== null) {
@@ -227,7 +228,7 @@ class NotificationManager {
     }
 
     clearHistory(): void {
-        console.log("🗑️  Clearing notification history")
+        logger.debug("Clearing notification history")
         this.notificationHistory = []
         this.signaler.emit('history-changed')
     }
@@ -238,7 +239,7 @@ class NotificationManager {
     }
 
     clearAllHistory(): void {
-        console.log("🗑️ Clearing all notification history")
+        logger.debug("Clearing all notification history")
 
         // Dismiss all notifications from AstalNotifd first
         for (const notif of this.notificationHistory) {
@@ -255,7 +256,7 @@ class NotificationManager {
     }
 
     cleanup(): void {
-        console.log("🧹 NotificationManager cleanup")
+        logger.debug("NotificationManager cleanup")
 
         // Disconnect from notifd service
         if (notification && this.notifdSignalId !== null) {

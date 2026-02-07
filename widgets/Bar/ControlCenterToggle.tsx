@@ -1,4 +1,5 @@
 import { Gtk } from "ags/gtk4"
+import { logger } from "../../lib/logger"
 import { onCleanup } from "ags"
 import app from "ags/gtk4/app"
 
@@ -19,7 +20,7 @@ export default function ControlCenterToggle() {
                     if (!window) {
                         retryCount++
                         if (retryCount >= MAX_RETRIES) {
-                            console.error("ControlCenter window not found after 5s, giving up")
+                            logger.error("ControlCenter window not found after 5s, giving up")
                             return
                         }
                         // Window not ready yet, retry in a bit

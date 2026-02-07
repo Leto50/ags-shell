@@ -1,4 +1,5 @@
 import { Gtk, Gdk, Astal, GLib } from "ags/gtk4"
+import { logger } from "../../lib/logger"
 import { onCleanup, For, createState, With, createComputed } from "ags"
 import app from "ags/gtk4/app"
 import { notificationManager } from "./NotificationManager"
@@ -62,14 +63,14 @@ export default function NotificationCenter() {
                             self.visible = false
                         }
                     } catch (e) {
-                        console.warn("Failed to get notification center allocation:", e)
+                        logger.warn("Failed to get notification center allocation:", e)
                     }
                 })
                 self.add_controller(clickController)
 
                 // Cleanup
                 onCleanup(() => {
-                    console.log("🧹 Cleaning up NotificationCenter")
+                    logger.debug("🧹 Cleaning up NotificationCenter")
                 })
             }}
         >

@@ -1,4 +1,5 @@
 import { Gtk } from "ags/gtk4"
+import { logger } from "../../lib/logger"
 import { onCleanup } from "ags"
 import { execAsync } from "ags/process"
 
@@ -23,7 +24,7 @@ export default function BrightnessSlider() {
                                 self.value = parseInt(current.trim()) / parseInt(max.trim())
                             })
                             .catch(e => {
-                                console.error("Failed to read brightness:", e)
+                                logger.error("Failed to read brightness:", e)
                                 self.value = 0.5
                             })
 
@@ -33,7 +34,7 @@ export default function BrightnessSlider() {
                                 const percent = Math.round(self.value * 100)
                                 await execAsync(["brightnessctl", "set", `${percent}%`])
                             } catch (e) {
-                                console.error("Failed to set brightness:", e)
+                                logger.error("Failed to set brightness:", e)
                             }
                         })
 

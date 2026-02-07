@@ -3,6 +3,7 @@ import Gio from "gi://Gio"
 import GLib from "gi://GLib"
 import app from "ags/gtk4/app"
 import { config } from "../../config"
+import { logger } from "../../lib/logger"
 
 let contentBox: Gtk.Box | null = null
 let menuWindow: Astal.Window | null = null
@@ -93,15 +94,11 @@ function parseMenuItem(itemVariant: any): MenuItem | null {
         if (!visible) return null
 
         // Recursively parse children
-        const children: MenuItem[] = []
         const childCount = childrenVariant.n_children()
-        for (let i = 0; i < childCount; i++) {
-            const childVariant = childrenVariant.get_child_value(i)
-            const childItem = parseMenuItem(childVariant)
-            if (childItem) {
-                children.push(childItem)
-            }
-        }
+        const children: MenuItem[] = Array.from(
+            { length: childCount },
+            (_, i) => parseMenuItem(childrenVariant.get_child_value(i))
+        ).filter((item): item is MenuItem => item !== null)
 
         return {
             id: itemId,
@@ -119,7 +116,7 @@ function parseMenuItem(itemVariant: any): MenuItem | null {
             children: children.length > 0 ? children : undefined
         }
     } catch (e) {
-        console.error("Error parsing menu item:", e)
+        logger.error("Error parsing menu item:", e)
         return null
     }
 }
@@ -155,22 +152,18 @@ function formatShortcut(shortcutVariant: any): string {
 
         return keys.join('+')
     } catch (e) {
-        console.error('Error formatting shortcut:', e)
+        logger.error('Error formatting shortcut:', e)
         return ''
     }
 }
 
 // Get ENTIRE menu structure via ONE DBus GetLayout() call!
 async function getMenuLayoutViaDBus(itemId: string, menuPath: string): Promise<MenuItem[]> {
-    const items: MenuItem[] = []
-
     try {
         // Parse bus name from item_id (e.g., ":1.50/org/ayatana/NotificationItem/proton_vpn_app")
         const busName = itemId.split('/')[0]
 
-        console.log("🔌 Calling GetLayout on DBus:")
-        console.log("  Bus name:", busName)
-        console.log("  Object path:", menuPath)
+        logger.debug("Calling GetLayout on DBus:", { busName, menuPath })
 
         const connection = Gio.DBus.session
 
@@ -215,14 +208,14 @@ async function getMenuLayoutViaDBus(itemId: string, menuPath: string): Promise<M
             )
         })
 
-        console.log("✅ GetLayout returned successfully!")
+        logger.debug("GetLayout returned successfully")
 
         // Parse the result: GetLayout returns (uint revision, (ia{sv}) layout)
         // Don't use deepUnpack - manually unpack the GVariant structure
         const revision = result.get_child_value(0).get_uint32()
         const layoutVariant = result.get_child_value(1)
 
-        console.log("  Revision:", revision)
+        logger.debug("Menu revision:", revision)
 
         // Layout structure: (id INT32, properties DICT{sv}, children ARRAY of (ia{sv}as))
         const rootId = layoutVariant.get_child_value(0).get_int32()
@@ -230,26 +223,28 @@ async function getMenuLayoutViaDBus(itemId: string, menuPath: string): Promise<M
         const childrenVariant = layoutVariant.get_child_value(2)
 
         const childrenCount = childrenVariant.n_children()
-        console.log("📦 Parsing layout:")
-        console.log("  Root ID:", rootId)
-        console.log("  Children count:", childrenCount)
+        logger.debug("Parsing menu layout:", { rootId, childrenCount })
 
         // Process each child recursively
-        for (let i = 0; i < childrenCount; i++) {
-            const childVariant = childrenVariant.get_child_value(i)
-            const childItem = parseMenuItem(childVariant)
-            if (childItem) {
-                items.push(childItem)
-                console.log(`  ✓ Item ${childItem.id}: "${childItem.label}" (children: ${childItem.children?.length || 0})`)
+        const items = Array.from(
+            { length: childrenCount },
+            (_, i) => {
+                const childItem = parseMenuItem(childrenVariant.get_child_value(i))
+                if (childItem) {
+                    logger.debug(`Menu item parsed: ${childItem.id} "${childItem.label}"`, {
+                        childrenCount: childItem.children?.length || 0
+                    })
+                }
+                return childItem
             }
-        }
+        ).filter((item): item is MenuItem => item !== null)
 
-        console.log(`📋 Extracted ${items.length} menu items via GetLayout`)
+        logger.debug(`Extracted ${items.length} menu items via GetLayout`)
         return items
 
     } catch (e) {
-        console.error("❌ GetLayout call failed:", e)
-        return items
+        logger.error("GetLayout call failed:", e)
+        return []
     }
 }
 
@@ -360,7 +355,7 @@ function buildMenuFromData(menuData: MenuItem[], box: Gtk.Box, busName: string, 
         } else if (menuItem.iconData) {
             // TODO: Handle custom icon data
             // This would require converting the byte array to a GdkPixbuf
-            console.log('Icon data present but not yet implemented')
+            logger.debug('Icon data present but not yet implemented')
         }
 
         // Add label with max-width constraint
@@ -400,13 +395,18 @@ function buildMenuFromData(menuData: MenuItem[], box: Gtk.Box, busName: string, 
         btn.connect("clicked", () => {
             // If item has children, navigate into submenu
             if (menuItem.children && menuItem.children.length > 0) {
-                console.log(`📂 Opening submenu: ${menuItem.label} (${menuItem.children.length} items)`)
+                logger.debug(`Opening submenu: ${menuItem.label}`, {
+                    itemCount: menuItem.children.length
+                })
 
                 // Save current menu to stack
-                currentMenuStack.push({
-                    items: menuData,
-                    title: parentTitle || 'Menu'
-                })
+                currentMenuStack = [
+                    ...currentMenuStack,
+                    {
+                        items: menuData,
+                        title: parentTitle || 'Menu'
+                    }
+                ]
 
                 // Clear and rebuild with submenu items
                 while (box.get_first_child()) {
@@ -416,7 +416,7 @@ function buildMenuFromData(menuData: MenuItem[], box: Gtk.Box, busName: string, 
             } else {
                 // Regular item - send Event
                 try {
-                    console.log(`🔔 Activating menu item ID: ${itemId} (${menuItem.label})`)
+                    logger.debug(`Activating menu item: ${itemId} "${menuItem.label}"`)
 
                     const connection = Gio.DBus.session
 
@@ -439,14 +439,14 @@ function buildMenuFromData(menuData: MenuItem[], box: Gtk.Box, busName: string, 
                         (connection, result) => {
                             try {
                                 connection.call_finish(result)
-                                console.log(`✅ Event sent for item ${itemId}`)
+                                logger.debug(`Event sent for item ${itemId}`)
                             } catch (e) {
-                                console.error(`❌ Event call failed for item ${itemId}:`, e)
+                                logger.error(`Event call failed for item ${itemId}:`, e)
                             }
                         }
                     )
                 } catch (e) {
-                    console.error("Error sending Event:", e)
+                    logger.error("Error sending Event:", e)
                 }
                 if (menuWindow) menuWindow.visible = false
             }
@@ -457,13 +457,13 @@ function buildMenuFromData(menuData: MenuItem[], box: Gtk.Box, busName: string, 
 }
 
 export async function showTrayMenu(item: any, buttonX: number) {
-    console.log("================================================================================")
-    console.log(">>> showTrayMenu called (DBus GetLayout version)")
-    console.log("  item_id:", item.item_id)
-    console.log("  menu_path:", item.menu_path)
+    logger.debug("showTrayMenu called", {
+        itemId: item.item_id,
+        menuPath: item.menu_path
+    })
 
     if (!contentBox || !menuWindow) {
-        console.error("Missing contentBox or menuWindow!")
+        logger.error("Missing contentBox or menuWindow!")
         return
     }
 
@@ -476,13 +476,12 @@ export async function showTrayMenu(item: any, buttonX: number) {
     try {
         // Get ENTIRE menu structure via ONE DBus GetLayout() call!
         const menuData = await getMenuLayoutViaDBus(item.item_id, item.menu_path)
-        console.log(`Got ${menuData.length} menu items from GetLayout`)
+        logger.debug(`Retrieved ${menuData.length} menu items from GetLayout`)
 
         // Extract busName and menuPath for Event calls
         const busName = item.item_id.split('/')[0]
         const menuPath = item.menu_path
-        console.log("Extracted busName:", busName)
-        console.log("Extracted menuPath:", menuPath)
+        logger.debug("Extracted DBus info:", { busName, menuPath })
 
         // Position the menu
         if (buttonX && menuWindow) {
@@ -493,26 +492,23 @@ export async function showTrayMenu(item: any, buttonX: number) {
                     const geometry = monitor.get_geometry()
                     const distanceFromRight = geometry.width - buttonX
                     const finalMargin = Math.max(config.bar.marginHorizontal, distanceFromRight - 100)
-                    console.log("Setting margin right:", finalMargin)
+                    logger.debug("Setting margin right:", finalMargin)
                     menuWindow.set_margin_right(finalMargin)
                 }
             }
         }
 
-        console.log("Building menu UI...")
+        logger.debug("Building menu UI...")
         // Build menu from extracted data
         // Pass busName and menuPath for DBus Event calls
         buildMenuFromData(menuData, contentBox, busName, menuPath)
-        console.log("Menu UI built")
+        logger.debug("Menu UI built")
 
         // Show window directly instead of toggle
-        console.log("Setting window visible to true...")
         menuWindow.visible = true
-        console.log("Window shown")
-
-        console.log("<<< showTrayMenu completed successfully")
+        logger.debug("showTrayMenu completed successfully")
     } catch (e) {
-        console.error("!!! Error showing tray menu:", e)
+        logger.error("Error showing tray menu:", e)
     }
 }
 
@@ -536,7 +532,7 @@ export default function TrayMenu() {
                 const keyController = new Gtk.EventControllerKey()
                 keyController.connect("key-pressed", (_controller, keyval) => {
                     if (keyval === Gdk.KEY_Escape) {
-                        console.log("Escape pressed, hiding menu with visible = false")
+                        logger.debug("Escape pressed, hiding menu")
                         self.visible = false
                         return true
                     }
@@ -553,11 +549,11 @@ export default function TrayMenu() {
                         const isOutside = x < allocation.x || x > allocation.x + allocation.width ||
                                         y < allocation.y || y > allocation.y + allocation.height
                         if (isOutside) {
-                            console.log("Click outside, hiding menu with visible = false")
+                            logger.debug("Click outside, hiding menu")
                             self.visible = false
                         }
                     } catch (e) {
-                        console.warn("Failed to get tray menu allocation:", e)
+                        logger.warn("Failed to get tray menu allocation:", e)
                     }
                 })
                 self.add_controller(clickController)

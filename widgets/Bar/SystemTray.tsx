@@ -3,6 +3,7 @@ import { onCleanup } from "ags"
 import AstalTray from "gi://AstalTray?version=0.1"
 import { showTrayMenu } from "./TrayMenu"
 import { config } from "../../config"
+import { logger } from "../../lib/logger"
 
 export default function SystemTray() {
     const tray = AstalTray.get_default()
@@ -13,14 +14,14 @@ export default function SystemTray() {
             spacing={config.systemTray.iconSpacing}
             $={(self) => {
                 // Track signal IDs for cleanup
-                const signalIds: Array<{ item: any, ids: number[] }> = []
+                let signalIds: Array<{ item: any, ids: number[] }> = []
 
                 const rebuild = () => {
                     // Disconnect old signals before clearing
                     signalIds.forEach(({ item, ids }) => {
                         ids.forEach(id => item.disconnect(id))
                     })
-                    signalIds.length = 0
+                    signalIds = []
 
                     // Clear existing items
                     while (self.get_first_child()) {
@@ -37,7 +38,7 @@ export default function SystemTray() {
 
                         // Left-click: activate item
                         btn.connect("clicked", () => {
-                            console.log("Left-click on:", item.tooltipMarkup || "(empty)")
+                            logger.debug("Tray item activated:", item.tooltipMarkup || "(no tooltip)")
                             item.activate(0, 0)
                         })
 
@@ -48,7 +49,7 @@ export default function SystemTray() {
                             gesture.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
 
                             gesture.connect("released", () => {
-                                console.log("Right-click on:", item.tooltipMarkup || "(empty)")
+                                logger.debug("Tray menu requested:", item.tooltipMarkup || "(no tooltip)")
 
                                 // Calculate button position
                                 let totalX = 0

@@ -4,6 +4,7 @@ import Notifd from "gi://AstalNotifd"
 import GLib from "gi://GLib"
 import app from "ags/gtk4/app"
 import { config } from "../../config"
+import { logger } from "../../lib/logger"
 
 interface NotificationPopupProps {
     notification: Notifd.Notification
@@ -24,7 +25,7 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
         if (timeout <= 0) return
 
         dismissTimeout = setTimeout(() => {
-            console.log(`  ⏱️  Auto-dismissing notification ${notification.id}`)
+            logger.debug(`  ⏱️  Auto-dismissing notification ${notification.id}`)
             onClose()
         }, timeout) as unknown as number
     }
@@ -34,7 +35,7 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
             clearTimeout(dismissTimeout)
             dismissTimeout = null
             isPaused = true
-            console.log(`  ⏸️  Paused auto-dismiss for notification ${notification.id}`)
+            logger.debug(`  ⏸️  Paused auto-dismiss for notification ${notification.id}`)
         }
     }
 
@@ -42,7 +43,7 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
         if (isPaused) {
             setupAutoDismiss()
             isPaused = false
-            console.log(`  ▶️  Resumed auto-dismiss for notification ${notification.id}`)
+            logger.debug(`  ▶️  Resumed auto-dismiss for notification ${notification.id}`)
         }
     }
 
@@ -92,16 +93,16 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
                 let resolvedSignalId: number | null = null
                 try {
                     resolvedSignalId = notification.connect('resolved', () => {
-                        console.log(`  🔔 Notification ${notification.id} resolved externally`)
+                        logger.debug(`  🔔 Notification ${notification.id} resolved externally`)
                         onClose()
                     })
                 } catch (err) {
-                    console.warn(`Failed to connect to resolved signal for notification ${notification.id}:`, err)
+                    logger.warn(`Failed to connect to resolved signal for notification ${notification.id}:`, err)
                 }
 
                 // Cleanup on destroy
                 onCleanup(() => {
-                    console.log(`  🧹 Cleaning up popup ${notification.id}`)
+                    logger.debug(`  🧹 Cleaning up popup ${notification.id}`)
 
                     if (dismissTimeout !== null) {
                         clearTimeout(dismissTimeout)
@@ -188,7 +189,7 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
                                 <button
                                     class="notification-action-button"
                                     onClicked={() => {
-                                        console.log(`  🔘 Invoking action: ${action.id}`)
+                                        logger.debug(`  🔘 Invoking action: ${action.id}`)
                                         notification.invoke(action.id)
                                         onClose()
                                     }}

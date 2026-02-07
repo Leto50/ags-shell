@@ -1,4 +1,5 @@
 import { Gtk } from "ags/gtk4"
+import { logger } from "../../../lib/logger"
 import Bluetooth from "gi://AstalBluetooth"
 import { createBinding, For, onCleanup } from "ags"
 import { BluetoothItem } from "./BluetoothItem"
@@ -41,7 +42,7 @@ export function BluetoothMenu({ onBack }: BluetoothMenuProps) {
                         if (err.message?.includes("Operation already in progress")) {
                             globalDiscoverySession = true
                         } else {
-                            console.error("Failed to start Bluetooth discovery:", err)
+                            logger.error("Failed to start Bluetooth discovery:", err)
                         }
                     }
                 }
@@ -54,7 +55,7 @@ export function BluetoothMenu({ onBack }: BluetoothMenuProps) {
                         } catch (err: any) {
                             // Ignore "No discovery started" error (BlueZ state bug #807)
                             if (!err.message?.includes("No discovery started")) {
-                                console.error("Failed to stop Bluetooth discovery:", err)
+                                logger.error("Failed to stop Bluetooth discovery:", err)
                             }
                             // Reset even on error to avoid stuck state
                             globalDiscoverySession = false
@@ -145,7 +146,7 @@ export function BluetoothMenu({ onBack }: BluetoothMenuProps) {
                     hexpand={true}
                     onClicked={() => {
                         import("ags/process").then(({ execAsync }) => {
-                            execAsync(["blueman-manager"]).catch(console.error)
+                            execAsync(["blueman-manager"]).catch((err) => logger.error("Failed to open Bluetooth manager:", err))
                         })
                     }}
                 >
