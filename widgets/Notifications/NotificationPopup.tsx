@@ -26,24 +26,6 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
     const windowName = `notification-popup-${notification.id}`
     const hasImage = notifHasImg(notification)
 
-    // Debug: log ALL notification properties
-    console.log(`=== NOTIFICATION ${notification.id} ===`)
-    console.log("app_name:", notification.app_name)
-    console.log("app_icon:", notification.app_icon)
-    console.log("summary:", notification.summary)
-    console.log("body:", notification.body)
-    console.log("image:", notification.image)
-    console.log("actions:", notification.actions)
-    console.log("actions.length:", notification.actions?.length)
-    if (notification.actions && notification.actions.length > 0) {
-        notification.actions.forEach((action: any, i: number) => {
-            console.log(`  action[${i}]:`, action)
-            console.log(`  action[${i}].id:`, action.id)
-            console.log(`  action[${i}].label:`, action.label)
-        })
-    }
-    console.log("===========================")
-
     // Auto-dismiss timeout state
     let dismissTimeout: number | null = null
     let isPaused = false
@@ -182,23 +164,17 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
                     }
                 }}
             >
-                    {/* Large notification image (if available) */}
+                    {/* Notification image (if available) */}
                     {hasImage && (
-                        <box
-                            class="notification-image-container"
-                            halign={Gtk.Align.CENTER}
-                            valign={Gtk.Align.CENTER}
-                        >
-                            <Gtk.Picture
-                                class="notification-image"
-                                pixbuf={notification.image}
-                                contentFit={Gtk.ContentFit.COVER}
-                                canShrink={false}
-                            />
-                        </box>
+                        <image
+                            class="notification-icon"
+                            file={typeof notification.image === 'string' ? notification.image : undefined}
+                            pixbuf={typeof notification.image !== 'string' ? notification.image : undefined}
+                            pixel-size={32}
+                        />
                     )}
 
-                    {/* App icon (only if no large image) */}
+                    {/* App icon (only if no image) */}
                     {!hasImage && notification.app_icon && (
                         <image
                             file={notification.app_icon.startsWith('/') ? notification.app_icon : undefined}

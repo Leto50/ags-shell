@@ -8,6 +8,12 @@ import ToastContainer from "./widgets/Toast/ToastWidget"
 import "./widgets/Notifications/NotificationManager"  // Initialize notification manager
 import scss from "./style.scss"
 
+// Force Adwaita icon theme for AGS only
+const settings = Gtk.Settings.get_default()
+if (settings) {
+    settings.set_property("gtk-icon-theme-name", "Adwaita")
+}
+
 const css = new Gtk.CssProvider()
 css.load_from_string(scss)
 Gtk.StyleContext.add_provider_for_display(

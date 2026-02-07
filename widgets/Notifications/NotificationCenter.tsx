@@ -109,81 +109,13 @@ export default function NotificationCenter() {
                     spacing={8}
                     visible={currentPage((page) => page === "calendar")}
                 >
-                    {(() => {
-                        let calendar: Gtk.Calendar | null = null
-                        let titleLabel: Gtk.Label | null = null
-
-                        const MONTHS = [
-                            "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-                            "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
-                        ]
-
-                        const updateTitle = () => {
-                            if (calendar && titleLabel) {
-                                const date = calendar.get_date()
-                                const month = MONTHS[date.get_month() - 1]
-                                const year = date.get_year()
-                                titleLabel.set_label(`${month} ${year}`)
-                            }
-                        }
-
-                        const changeMonth = (delta: number) => {
-                            if (calendar) {
-                                const current = calendar.get_date()
-                                const newDate = current.add_months(delta)
-                                if (newDate) {
-                                    calendar.select_day(newDate)
-                                    updateTitle()
-                                }
-                            }
-                        }
-
-                        const changeYear = (delta: number) => {
-                            if (calendar) {
-                                const current = calendar.get_date()
-                                const newDate = current.add_years(delta)
-                                if (newDate) {
-                                    calendar.select_day(newDate)
-                                    updateTitle()
-                                }
-                            }
-                        }
-
-                        return (
-                            <box orientation={Gtk.Orientation.VERTICAL} spacing={4}>
-                                {/* Navigation personnalisée */}
-                                <box orientation={Gtk.Orientation.HORIZONTAL} class="calendar-header" halign={Gtk.Align.CENTER}>
-                                    <button class="calendar-nav-btn" onClicked={() => changeYear(-1)} tooltipText="Année précédente">
-                                        <image iconName="pan-start-symbolic" pixelSize={16} />
-                                    </button>
-                                    <button class="calendar-nav-btn" onClicked={() => changeMonth(-1)} tooltipText="Mois précédent">
-                                        <image iconName="go-previous-symbolic" pixelSize={16} />
-                                    </button>
-                                    <label
-                                        class="calendar-title"
-                                        hexpand={true}
-                                        $={(self) => { titleLabel = self }}
-                                    />
-                                    <button class="calendar-nav-btn" onClicked={() => changeMonth(1)} tooltipText="Mois suivant">
-                                        <image iconName="go-next-symbolic" pixelSize={16} />
-                                    </button>
-                                    <button class="calendar-nav-btn" onClicked={() => changeYear(1)} tooltipText="Année suivante">
-                                        <image iconName="pan-end-symbolic" pixelSize={16} />
-                                    </button>
-                                </box>
-                                <Gtk.Calendar
-                                    showHeading={false}
-                                    showDayNames={true}
-                                    showWeekNumbers={false}
-                                    $={(self) => {
-                                        calendar = self
-                                        updateTitle()
-                                        self.connect("day-selected", updateTitle)
-                                    }}
-                                />
-                            </box>
-                        )
-                    })()}
+                    <Gtk.Calendar
+                        showHeading={true}
+                        showDayNames={true}
+                        showWeekNumbers={false}
+                        halign={Gtk.Align.FILL}
+                        valign={Gtk.Align.FILL}
+                    />
                 </box>
 
                 {/* Notifications Page */}

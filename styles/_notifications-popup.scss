@@ -23,19 +23,6 @@ window.notification-popup {
     }
 }
 
-.notification-image-container {
-    margin: 0.5rem;
-    border-radius: $radius-sm;
-}
-
-.notification-image {
-    border-radius: $radius-sm;
-    min-width: 5rem;
-    min-height: 5rem;
-    max-width: 8rem;
-    max-height: 8rem;
-}
-
 .notification-icon {
     min-width: 32px;
     min-height: 32px;

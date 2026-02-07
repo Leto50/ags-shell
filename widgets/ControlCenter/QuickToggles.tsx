@@ -113,13 +113,13 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
     }
 
     const wifiIconBinding = wifiEnabledBinding((e) =>
-        e ? "network-wireless-symbolic" : "network-wireless-off-symbolic"
+        e ? "network-wireless-symbolic" : "network-wireless-offline-symbolic"
     )
     const bluetoothIconBinding = bluetoothEnabledBinding((e) =>
         e ? "bluetooth-active-symbolic" : "bluetooth-disabled-symbolic"
     )
     const notificationIconBinding = notificationEnabledBinding((e) =>
-        e ? "notification-disabled-symbolic" : "notification-symbolic"
+        e ? "notifications-disabled-symbolic" : "preferences-system-notifications-symbolic"
     )
     const hypridleIconBinding = hypridleEnabled((e) =>
         e ? "weather-clear-night-symbolic" : "weather-clear-symbolic"
@@ -218,7 +218,7 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
                 >
                     <CardButton
                         className="card card-padding"
-                        label_bind="bed-symbolic"
+                        label_bind="night-light-symbolic"
                         on_click={() => execAsync(["sh", "-c", "systemctl suspend || loginctl suspend"]).catch((err) => logger.error("Failed to suspend:", err))}
                     />
                     <CardButton

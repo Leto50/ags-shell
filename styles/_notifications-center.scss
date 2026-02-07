@@ -15,79 +15,78 @@ window.notification-center {
     overflow: hidden;
 }
 
-// Header with page switcher
-.notification-center-header {
-    padding: $space-1;
-    background: gtkalpha($window_fg_color, $alpha-subtle);
-    border-radius: $radius-sm;
-}
-
-// Page switcher buttons
-.page-button {
-    padding: $space-2 $space-4;
-    border-radius: $radius-sm;
-    background: transparent;
-    border: none;
-    transition: $transition-fast;
-}
-
-.page-button:hover {
-    background: gtkalpha($window_fg_color, $alpha-hover);
-}
-
-.page-button.active {
-    background: gtkalpha($accent_bg_color, $alpha-selected);
-}
-
-// Time widget
-.time-widget {
-    padding: $space-4;
-    text-align: center;
-}
-
-.time-label {
-    font-size: 2rem;
-    font-weight: $font-weight-semibold;
-}
-
-.date-label {
-    font-size: $font-size-sm;
-    opacity: 0.8;
-}
-
 // Calendar
 calendar {
     border-radius: $radius-md;
     padding: $space-2;
+    color: $window_fg_color;
+
+    // Grid container
+    grid {
+        label {
+            padding: 0.35em;
+        }
+
+        label.day-name {
+            color: $accent_bg_color;
+            font-weight: $font-weight-medium;
+        }
+
+        label.other-month {
+            opacity: 0.35;
+        }
+
+        label.today {
+            color: $accent_bg_color;
+            font-weight: $font-weight-semibold;
+        }
+
+        label:selected {
+            color: $accent_bg_color;
+            background: transparent;
+            border-radius: 0;
+            box-shadow:
+                inset 0 -0.5em 0 0 $accent_bg_color,
+                inset -0.4em -0.3em 0 0 $window_bg_color,
+                inset 0.4em 0 0 0.01em $window_bg_color;
+        }
+    }
+
+    // Year/month labels
+    label.year,
+    stack.month {
+        color: $accent_bg_color;
+        font-size: $font-size-lg;
+        font-weight: $font-weight-semibold;
+    }
+
 }
 
-// Header personnalisé du calendrier
-.calendar-header {
-    padding: $space-1;
-    margin-bottom: $space-1;
-}
-
-.calendar-title {
-    font-weight: $font-weight-semibold;
-    font-size: $font-size-base;
-}
-
-.calendar-nav-btn {
-    border-radius: $radius-sm;
-    padding: $space-1;
+// Calendar navigation buttons
+calendar button.image-button {
+    background: transparent;
     min-width: $size-button-sm;
     min-height: $size-button-sm;
+    padding: $space-1;
+    border-radius: $radius-sm;
+
+    image {
+        -gtk-icon-size: 16px;
+        -gtk-icon-palette: error white;
+        color: white;
+        min-width: 16px;
+        min-height: 16px;
+        opacity: 1;
+    }
 
     &:hover {
         background: gtkalpha($window_fg_color, $alpha-hover);
-    }
-}
 
-// Weather widget
-.weather-widget {
-    padding: $space-4;
-    background: gtkalpha($window_fg_color, $alpha-subtle);
-    border-radius: $radius-sm;
+        image {
+            -gtk-icon-palette: error $accent_bg_color;
+            color: $accent_bg_color;
+        }
+    }
 }
 
 // Notification item in history - follows network-item/bluetooth-item pattern

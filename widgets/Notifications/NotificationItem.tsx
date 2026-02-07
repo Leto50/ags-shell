@@ -40,10 +40,22 @@ export default function NotificationItem({ notification }: NotificationItemProps
         notificationManager.removeFromHistory(notification.id)
     }
 
+    const hasImage = !!(notification.image && notification.image.length > 0)
+
     return (
         <box orientation={Gtk.Orientation.HORIZONTAL} spacing={12} class="notification-item-wrapper">
-            {/* App icon */}
-            {notification.app_icon && (
+            {/* Notification image (if available) */}
+            {hasImage && (
+                <image
+                    class="notification-item-icon"
+                    file={typeof notification.image === 'string' ? notification.image : undefined}
+                    pixbuf={typeof notification.image !== 'string' ? notification.image : undefined}
+                    pixelSize={32}
+                />
+            )}
+
+            {/* App icon (only if no image) */}
+            {!hasImage && notification.app_icon && (
                 <image
                     file={notification.app_icon.startsWith('/') ? notification.app_icon : undefined}
                     iconName={!notification.app_icon.startsWith('/') ? notification.app_icon : undefined}
