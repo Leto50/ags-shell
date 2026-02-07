@@ -8,6 +8,7 @@ import { NetworkItem } from "./NetworkItem"
 import { PasswordDialog } from "./PasswordDialog"
 import { logger } from "../../../lib/logger"
 import { WiFiAccessPoint } from "../../../lib/types"
+import { toastManager } from "../../Toast/ToastManager"
 
 interface WiFiMenuProps {
     onBack: () => void
@@ -117,8 +118,11 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
                         await execAsync(["nmcli", "device", "wifi", "connect", ap.ssid])
                     }
                 }
+                // Success toast
+                toastManager.success(`Connected to ${ap.ssid}`)
             } catch (err: unknown) {
                 logger.error("Failed to connect to network:", err)
+                toastManager.error(`Failed to connect to ${ap.ssid}`)
             } finally {
                 setIsConnecting(false)
             }

@@ -1,0 +1,87 @@
+@use 'variables' as *;
+@use 'design-tokens' as *;
+
+// Toast window
+window.toast-window {
+    background-color: transparent;
+}
+
+// Toast item base
+.toast-item {
+    padding: $space-3 $space-4;
+    border-radius: $radius-md;
+    min-width: 300px;
+    max-width: 400px;
+    background: gtkalpha($card_bg_color, 0.95);
+    border-left: 3px solid;
+    box-shadow: $shadow-lg;
+    transition: $transition-normal;
+
+    image {
+        min-width: 20px;
+        min-height: 20px;
+    }
+
+    label {
+        font-size: $font-size-sm;
+    }
+
+    &:hover {
+        background: gtkalpha($card_bg_color, 1.0);
+    }
+}
+
+// Toast types
+.toast-success {
+    border-left-color: $success_color;
+
+    > image:first-child {
+        color: $success_color;
+    }
+}
+
+.toast-error {
+    border-left-color: $error_color;
+
+    > image:first-child {
+        color: $error_color;
+    }
+}
+
+.toast-warning {
+    border-left-color: $warning_color;
+
+    > image:first-child {
+        color: $warning_color;
+    }
+}
+
+.toast-info {
+    border-left-color: $accent_bg_color;
+
+    > image:first-child {
+        color: $accent_bg_color;
+    }
+}
+
+// Close button
+.toast-close {
+    padding: $space-1;
+    border-radius: $radius-sm;
+    background: transparent;
+    border: none;
+    opacity: 0.6;
+    transition: $transition-fast;
+    min-width: 24px;
+    min-height: 24px;
+
+    &:hover {
+        opacity: 1;
+        background: gtkalpha($window_fg_color, $alpha-hover);
+    }
+
+    image {
+        min-width: 16px;
+        min-height: 16px;
+    }
+}

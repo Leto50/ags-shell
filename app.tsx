@@ -4,6 +4,7 @@ import Bar from "./widgets/Bar"
 import ControlCenter from "./widgets/ControlCenter"
 import TrayMenu from "./widgets/Bar/TrayMenu/index"
 import NotificationCenter from "./widgets/Notifications/NotificationCenter"
+import ToastContainer from "./widgets/Toast/ToastWidget"
 import "./widgets/Notifications/NotificationManager"  // Initialize notification manager
 import scss from "./style.scss"
 
@@ -31,5 +32,6 @@ app.start({
         ControlCenter()
         TrayMenu()
         NotificationCenter()
+        ToastContainer()
     }
 })
