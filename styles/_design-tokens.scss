@@ -17,12 +17,12 @@ $space-10: 2.5rem;  // 40px
 $space-12: 3rem;    // 48px
 
 // ============================================
-// BORDER RADIUS
+// BORDER RADIUS (Match Hyprland rounding=10px)
 // ============================================
-$radius-sm: 0.375rem;  // 6px - petits éléments
-$radius-md: 0.5rem;    // 8px - boutons, cards
-$radius-lg: 0.75rem;   // 12px - panels, grandes cards
-$radius-xl: 1rem;      // 16px - windows
+$radius-sm: 0.375rem;  // 6px - petits éléments (boutons, items)
+$radius-md: 0.625rem;  // 10px - MATCH HYPRLAND (panels, cards, windows)
+$radius-lg: 0.75rem;   // 12px - optionnel
+$radius-xl: 1rem;      // 16px - optionnel
 
 // ============================================
 // SIZING

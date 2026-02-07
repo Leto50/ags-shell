@@ -16,9 +16,10 @@ interface WiFiMenuProps {
 export function WiFiMenu({ onBack }: WiFiMenuProps) {
     const network = Network.get_default()
     const [showPasswordDialog, setShowPasswordDialog] = createState(false)
-    const [selectedNetwork, setSelectedNetwork] = createState<any>(null)
+    const [selectedNetwork, setSelectedNetwork] = createState<WiFiAccessPoint | null>(null)
     const [savedNetworks, setSavedNetworks] = createState<string[]>([])
     const [isScanning, setIsScanning] = createState(false)
+    const [isConnecting, setIsConnecting] = createState(false)
 
     // Load saved networks
     const loadSavedNetworks = async () => {
@@ -55,6 +56,12 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
     })
 
     const handleNetworkClick = async (ap: WiFiAccessPoint) => {
+        // Prevent race condition - block concurrent connection attempts
+        if (isConnecting()) {
+            logger.debug("Connection already in progress, ignoring click")
+            return
+        }
+
         // Validate access point object
         if (!ap || !ap.ssid) {
             logger.warn("Invalid access point object")
@@ -62,10 +69,15 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
         }
 
         // Validate SSID to prevent command injection
-        // SSID can contain spaces, hyphens, underscores, and alphanumeric
-        // But should not contain shell special characters
-        if (!/^[\w\s._-]+$/.test(ap.ssid)) {
-            logger.error("Invalid SSID format - potential security risk", { ssid: ap.ssid })
+        // SSIDs are 0-32 bytes, can contain any UTF-8 characters except control chars
+        if (ap.ssid.length === 0 || ap.ssid.length > 32) {
+            logger.error("Invalid SSID length", { length: ap.ssid.length })
+            return
+        }
+
+        // Reject null bytes and control characters (except space)
+        if (/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/.test(ap.ssid)) {
+            logger.error("Invalid SSID format - contains control characters")
             return
         }
 
@@ -82,19 +94,33 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
             setShowPasswordDialog(true)
         } else {
             // Connect directly (saved network or open network)
+            setIsConnecting(true)
             try {
                 if (isSaved) {
                     // Try to bring up existing connection, fall back to new connection
                     try {
                         await execAsync(["nmcli", "connection", "up", ap.ssid])
-                    } catch {
-                        await execAsync(["nmcli", "device", "wifi", "connect", ap.ssid])
+                    } catch (upErr) {
+                        logger.debug("Connection up failed, trying direct connect", upErr)
+                        // Prefer BSSID for unique identification when available
+                        if (ap.bssid) {
+                            await execAsync(["nmcli", "device", "wifi", "connect", ap.bssid])
+                        } else {
+                            await execAsync(["nmcli", "device", "wifi", "connect", ap.ssid])
+                        }
                     }
                 } else {
-                    await execAsync(["nmcli", "device", "wifi", "connect", ap.ssid])
+                    // Prefer BSSID for unique identification when available
+                    if (ap.bssid) {
+                        await execAsync(["nmcli", "device", "wifi", "connect", ap.bssid])
+                    } else {
+                        await execAsync(["nmcli", "device", "wifi", "connect", ap.ssid])
+                    }
                 }
             } catch (err: unknown) {
                 logger.error("Failed to connect to network:", err)
+            } finally {
+                setIsConnecting(false)
             }
         }
     }

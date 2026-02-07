@@ -10,19 +10,33 @@ interface BluetoothItemProps {
     device: BluetoothDevice
 }
 
+// Promisify D-Bus call method (module level, not in render)
+if (!Gio.DBusProxy.prototype.call_async) {
+    Gio._promisify(Gio.DBusProxy.prototype, 'call', 'call_finish')
+}
+
 export function BluetoothItem({ device }: BluetoothItemProps) {
     const [errorMessage, setErrorMessage] = createState("")
     const [isPairing, setIsPairing] = createState(false)
 
-    // Promisify D-Bus call method
-    if (!Gio.DBusProxy.prototype.call_async) {
-        Gio._promisify(Gio.DBusProxy.prototype, 'call', 'call_finish')
-    }
+    // Atomic lock for preventing TOCTOU race condition
+    let pairingLock = false
 
     const pairDevice = async (): Promise<void> => {
         // Validate device object
         if (!device || !device.adapter || !device.address) {
             throw new Error("Invalid device object: missing adapter or address")
+        }
+
+        // Validate Bluetooth MAC address format (XX:XX:XX:XX:XX:XX)
+        const BLUETOOTH_MAC_REGEX = /^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$/
+        if (!BLUETOOTH_MAC_REGEX.test(device.address)) {
+            throw new Error("Invalid Bluetooth address format")
+        }
+
+        // Validate adapter path format (should be /org/bluez/hciX)
+        if (!/^\/org\/bluez\/hci\d+$/.test(device.adapter)) {
+            throw new Error("Invalid adapter path format")
         }
 
         // Construct D-Bus path from device address and adapter
@@ -52,7 +66,10 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
     }
 
     const handleClick = async () => {
-        if (device.connecting || isPairing()) return
+        // Prevent TOCTOU race condition with atomic lock
+        if (device.connecting || isPairing() || pairingLock) return
+
+        pairingLock = true
 
         // Clear previous error
         setErrorMessage("")
@@ -120,6 +137,8 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
                         setErrorMessage("Pairing failed")
                     }
                 }
+            } finally {
+                pairingLock = false
             }
         }
     }
