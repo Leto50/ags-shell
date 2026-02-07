@@ -5,7 +5,7 @@
 
 import { Gtk, Astal } from "ags/gtk4"
 import { toastManager, Toast } from "./ToastManager"
-import { createState, onCleanup } from "ags"
+import { createState, onCleanup, For } from "ags"
 
 interface ToastItemProps {
     toast: Toast
@@ -93,9 +93,9 @@ export default function ToastContainer() {
                 valign={Gtk.Align.END}
                 halign={Gtk.Align.END}
             >
-                {toasts().map((toast) => (
-                    <ToastItem key={toast.id} toast={toast} />
-                ))}
+                <For each={toasts}>
+                    {(toast) => <ToastItem toast={toast} />}
+                </For>
             </box>
         </window>
     )
