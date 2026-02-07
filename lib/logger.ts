@@ -2,8 +2,9 @@
  * Logger utility for AGS shell
  * Provides conditional logging based on debug mode
  */
+import GLib from "gi://GLib"
 
-const DEBUG_MODE = !!process.env.AGS_DEBUG || false
+const DEBUG_MODE = GLib.getenv("AGS_DEBUG") === "1" || GLib.getenv("AGS_DEBUG") === "true"
 
 export const logger = {
   /**
