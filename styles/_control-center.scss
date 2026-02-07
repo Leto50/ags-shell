@@ -1,0 +1,180 @@
+window.control-center {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+.control-center-box {
+    border-radius: 12px;
+    background: gtkalpha($window_bg_color, 0.3);
+    width: 21.25rem; /* 340px / 16 = 21.25rem */
+    padding: 0.9375rem; /* 15px / 16 = 0.9375rem */
+    overflow: hidden;
+}
+
+.card {
+    background: gtkalpha($card_bg_color, 0.6);
+    border-radius: 0.5rem; /* 8px */
+    overflow: hidden;
+}
+
+.card-padding {
+    padding: 0.9375rem; /* 15px */
+}
+
+
+.caption-heading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0.6;
+    letter-spacing: 0.02em;
+}
+
+.icon-container {
+    pointer-events: none;
+}
+
+.button {
+    margin: 0px;
+}
+
+label {
+    padding: 0px;
+    margin: 0px;
+}
+
+button {
+    background: transparent;
+    border: none;
+    color: inherit;
+    transition: all 150ms ease-out;
+}
+
+calendar button {
+    color: inherit;
+}
+
+button:hover {
+    background: gtkalpha($window_fg_color, 0.1);
+}
+
+button.active {
+    background: gtkalpha($accent_bg_color, 0.2);
+}
+
+button:active {
+    background: gtkalpha($window_fg_color, 0.15);
+}
+
+button:focus-visible {
+    outline: 2px solid $accent_bg_color;
+    outline-offset: 2px;
+}
+
+button.circular {
+    border-radius: 50%;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    padding: 0;
+}
+
+scale {
+  all: unset;
+  min-height: 1.5rem;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0;
+}
+
+scale:focus-visible {
+  outline: 2px solid $accent_bg_color;
+  outline-offset: 2px;
+  border-radius: 0.75rem;
+}
+
+scale trough {
+  min-height: 1.5rem;
+  border-radius: 0.75rem;
+  background: gtkalpha($window_fg_color, 0.1);
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+}
+
+scale highlight {
+  min-height: 1.5rem;
+  border-top-left-radius: 0.75rem;
+  border-bottom-left-radius: 0.75rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  background: linear-gradient(90deg, $accent_bg_color, gtkshade($accent_bg_color, 1.2));
+}
+
+scale slider {
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  border-radius: 50%;
+  background: gtkmix($accent_bg_color, $window_fg_color, 0.95);
+  box-shadow: 0 2px 8px gtkalpha($window_fg_color, 0.2);
+}
+
+.volume-icon,
+.brightness-icon {
+  margin-left: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.control-section {
+    transition: all 200ms ease-in-out;
+    max-width: 19.375rem; /* 310px / 16 */
+}
+
+.player-info {
+    min-width: 0;
+}
+
+.control-section > image {
+    margin: 0;
+    padding: 0;
+    border-radius: 0.5rem; /* 8px */
+}
+
+.player-info scrolledwindow {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.player-info scrolledwindow > * {
+    overflow: hidden;
+}
+
+.player-info scrolledwindow box {
+    background-color: transparent;
+}
+
+.player-info scrolledwindow label {
+    background-color: transparent;
+}
+
+.control-section image,
+.control-section label {
+    transition: opacity 200ms ease-in-out;
+}
+
+.album-cover-box {
+    border-radius: 0.5rem; /* 8px */
+    min-width: 52px;
+    min-height: 52px;
+    max-width: 52px;
+    max-height: 52px;
+    border: none;
+    box-shadow: none;
+}
+
+.album-cover-box picture {
+    min-width: 52px;
+    min-height: 52px;
+}
+
+/* Bar styles - Apple-like */

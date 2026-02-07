@@ -1,0 +1,32 @@
+// ============================================================================
+// GTK CSS FUNCTIONS
+// ============================================================================
+// Wrapper functions to use GTK CSS functions in SCSS without conflicts
+@use "sass:string";
+@function gtkalpha($c, $a) { @return string.unquote("alpha(#{$c}, #{$a})"); }
+@function gtkmix($c1, $c2, $r) { @return string.unquote("mix(#{$c1}, #{$c2}, #{$r})"); }
+@function gtkshade($c, $s) { @return string.unquote("shade(#{$c}, #{$s})"); }
+
+// ============================================================================
+// VARIABLES
+// ============================================================================
+
+// Matugen GTK colors
+$window_fg_color: #{"@window_fg_color"};
+$window_bg_color: #{"@window_bg_color"};
+$view_bg_color: #{"@view_bg_color"};
+$view_fg_color: #{"@view_fg_color"};
+$card_bg_color: #{"@card_bg_color"};
+$popover_bg_color: #{"@popover_bg_color"};
+$accent_color: #{"@accent_color"};
+$accent_bg_color: #{"@accent_bg_color"};
+$accent_fg_color: #{"@accent_fg_color"};
+$error_color: #{"@error_color"};
+$warning_color: #{"@warning_color"};
+$success_color: #{"@success_color"};
+
+// Bar element sizing - single source of truth
+$bar-element-size: 1.2em;
+
+// ============================================================================
+
