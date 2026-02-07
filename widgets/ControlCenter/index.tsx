@@ -50,7 +50,7 @@ export default function ControlCenter() {
                         if (bluetooth.adapter && bluetooth.adapter.discovering) {
                             try {
                                 bluetooth.adapter.stop_discovery()
-                            } catch (err: any) {
+                            } catch (err: unknown) {
                                 // Ignore "No discovery started" error (BlueZ bug or already stopped by cleanup)
                                 if (!err.message?.includes("No discovery started")) {
                                     logger.error("Failed to stop Bluetooth discovery:", err)

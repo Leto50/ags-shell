@@ -84,7 +84,7 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
                 } else {
                     await execAsync(["nmcli", "device", "wifi", "connect", ap.ssid])
                 }
-            } catch (err: any) {
+            } catch (err: unknown) {
                 logger.error("Failed to connect to network:", err)
             }
         }

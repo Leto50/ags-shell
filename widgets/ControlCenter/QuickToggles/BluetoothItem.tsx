@@ -4,9 +4,10 @@ import Bluetooth from "gi://AstalBluetooth"
 import Gio from "gi://Gio"
 import GLib from "gi://GLib"
 import { logger } from "../../../lib/logger"
+import { BluetoothDevice } from "../../../lib/types"
 
 interface BluetoothItemProps {
-    device: any
+    device: BluetoothDevice
 }
 
 export function BluetoothItem({ device }: BluetoothItemProps) {
@@ -81,7 +82,7 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
             try {
                 await pairDevice()
                 setIsPairing(false)
-            } catch (err: any) {
+            } catch (err: unknown) {
                 setIsPairing(false)
 
                 // Debug: log full error to understand structure

@@ -37,7 +37,7 @@ export function BluetoothMenu({ onBack }: BluetoothMenuProps) {
                     try {
                         bluetooth.adapter.start_discovery()
                         globalDiscoverySession = true
-                    } catch (err: any) {
+                    } catch (err: unknown) {
                         // Ignore "Operation already in progress" - still claim ownership
                         if (err.message?.includes("Operation already in progress")) {
                             globalDiscoverySession = true
@@ -52,7 +52,7 @@ export function BluetoothMenu({ onBack }: BluetoothMenuProps) {
                         try {
                             bluetooth.adapter.stop_discovery()
                             globalDiscoverySession = false
-                        } catch (err: any) {
+                        } catch (err: unknown) {
                             // Ignore "No discovery started" error (BlueZ state bug #807)
                             if (!err.message?.includes("No discovery started")) {
                                 logger.error("Failed to stop Bluetooth discovery:", err)

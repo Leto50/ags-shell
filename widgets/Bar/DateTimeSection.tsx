@@ -9,9 +9,9 @@ export default function DateTimeSection() {
     const time = createPoll("", 1000, () => {
         const now = new Date()
         const options: Intl.DateTimeFormatOptions = {}
-        if (config.datetime.timeHour) options.hour = config.datetime.timeHour as any
-        if (config.datetime.timeMinute) options.minute = config.datetime.timeMinute as any
-        if (config.datetime.timeSecond) options.second = config.datetime.timeSecond as any
+        if (config.datetime.timeHour) options.hour = config.datetime.timeHour as "numeric" | "2-digit"
+        if (config.datetime.timeMinute) options.minute = config.datetime.timeMinute as "numeric" | "2-digit"
+        if (config.datetime.timeSecond) options.second = config.datetime.timeSecond as "numeric" | "2-digit"
         return now.toLocaleTimeString(config.datetime.locale, options)
     })
 
