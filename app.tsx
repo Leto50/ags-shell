@@ -2,7 +2,7 @@ import app from "ags/gtk4/app"
 import { Gtk, Gdk } from "ags/gtk4"
 import Bar from "./widgets/Bar"
 import ControlCenter from "./widgets/ControlCenter"
-import TrayMenu from "./widgets/Bar/TrayMenu"
+import TrayMenu from "./widgets/Bar/TrayMenu/index"
 import NotificationCenter from "./widgets/Notifications/NotificationCenter"
 import "./widgets/Notifications/NotificationManager"  // Initialize notification manager
 import scss from "./style.scss"

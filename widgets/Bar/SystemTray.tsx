@@ -1,7 +1,7 @@
 import { Gtk, Gdk } from "ags/gtk4"
 import { onCleanup } from "ags"
 import AstalTray from "gi://AstalTray?version=0.1"
-import { showTrayMenu } from "./TrayMenu"
+import { showTrayMenu } from "./TrayMenu/index"
 import { config } from "../../config"
 import { logger } from "../../lib/logger"
 

@@ -5,6 +5,7 @@ import app from "ags/gtk4/app"
 import { notificationManager } from "./NotificationManager"
 import NotificationItem from "./NotificationItem"
 import { config } from "../../config"
+import { paginateItems } from "./utils/pagination"
 
 type Page = "calendar" | "notifications"
 
@@ -202,9 +203,7 @@ export default function NotificationCenter() {
 
                         // Calculate pagination - depends on both history and notificationPage
                         const currentPageNotifications = createComputed([history, notificationPage], (h, p) => {
-                            const start = (p - 1) * NOTIFICATIONS_PER_PAGE
-                            const end = p * NOTIFICATIONS_PER_PAGE
-                            return h.slice(start, end)
+                            return paginateItems(h, p, NOTIFICATIONS_PER_PAGE).items
                         })
 
                         return (
