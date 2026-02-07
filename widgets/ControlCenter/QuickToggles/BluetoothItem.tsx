@@ -19,6 +19,11 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
     }
 
     const pairDevice = async (): Promise<void> => {
+        // Validate device object
+        if (!device || !device.adapter || !device.address) {
+            throw new Error("Invalid device object: missing adapter or address")
+        }
+
         // Construct D-Bus path from device address and adapter
         const devicePath = `${device.adapter}/dev_${device.address.replace(/:/g, '_')}`
 

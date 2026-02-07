@@ -1,4 +1,4 @@
-import { Gtk } from "ags/gtk4"
+import { Gtk, Astal } from "ags/gtk4"
 import { logger } from "../../lib/logger"
 import { onCleanup } from "ags"
 import app from "ags/gtk4/app"
@@ -10,7 +10,7 @@ export default function ControlCenterToggle() {
             onClicked={() => app.toggle_window("control-center")}
             $={(self) => {
                 let signalId: number | null = null
-                let window: any = null
+                let window: Astal.Window | null = null
                 let retryCount = 0
                 const MAX_RETRIES = 50  // 5 seconds max (50 × 100ms)
 

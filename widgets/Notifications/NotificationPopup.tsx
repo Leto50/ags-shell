@@ -6,6 +6,11 @@ import app from "ags/gtk4/app"
 import { config } from "../../config"
 import { logger } from "../../lib/logger"
 
+interface NotificationAction {
+    id: string
+    label: string
+}
+
 interface NotificationPopupProps {
     notification: Notifd.Notification
     onClose: () => void
@@ -185,7 +190,7 @@ export default function NotificationPopup({ notification, onClose, yOffset }: No
                             class="notification-actions"
                             spacing={8}
                         >
-                            {notification.actions.map((action: any) => (
+                            {notification.actions.map((action: NotificationAction) => (
                                 <button
                                     class="notification-action-button"
                                     onClicked={() => {

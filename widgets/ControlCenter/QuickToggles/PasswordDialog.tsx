@@ -3,8 +3,13 @@ import { logger } from "../../../lib/logger"
 import { createState } from "ags"
 import { execAsync } from "ags/process"
 
+interface NetworkAccessPoint {
+    ssid: string
+    [key: string]: any  // Other network properties
+}
+
 interface PasswordDialogProps {
-    network: any
+    network: any  // State object containing NetworkAccessPoint
     onClose: () => void
     onSuccess?: () => void
 }
@@ -54,7 +59,7 @@ export function PasswordDialog({ network, onClose, onSuccess }: PasswordDialogPr
         onClose()
     }
 
-    const handleKeyPress = (self: any) => {
+    const handleKeyPress = (self: Gtk.Entry) => {
         setPassword(self.text)
         setErrorMessage("") // Clear error when typing
     }

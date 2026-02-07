@@ -1,4 +1,4 @@
-import { Gtk } from "ags/gtk4"
+import { Gtk, Astal } from "ags/gtk4"
 import { logger } from "../../lib/logger"
 import { createPoll } from "ags/time"
 import { onCleanup } from "ags"
@@ -8,16 +8,16 @@ import { config } from "../../config"
 export default function DateTimeSection() {
     const time = createPoll("", 1000, () => {
         const now = new Date()
-        const options: any = {}
-        if (config.datetime.timeHour) options.hour = config.datetime.timeHour
-        if (config.datetime.timeMinute) options.minute = config.datetime.timeMinute
-        if (config.datetime.timeSecond) options.second = config.datetime.timeSecond
+        const options: Intl.DateTimeFormatOptions = {}
+        if (config.datetime.timeHour) options.hour = config.datetime.timeHour as any
+        if (config.datetime.timeMinute) options.minute = config.datetime.timeMinute as any
+        if (config.datetime.timeSecond) options.second = config.datetime.timeSecond as any
         return now.toLocaleTimeString(config.datetime.locale, options)
     })
 
     const date = createPoll("", 60000, () => {
         const now = new Date()
-        const options: any = {}
+        const options: Intl.DateTimeFormatOptions = {}
         if (config.datetime.dateWeekday) options.weekday = config.datetime.dateWeekday
         if (config.datetime.dateDay) options.day = config.datetime.dateDay
         if (config.datetime.dateMonth) options.month = config.datetime.dateMonth
@@ -31,7 +31,7 @@ export default function DateTimeSection() {
             onClicked={() => app.toggle_window("notification-center")}
             $={(self) => {
                 let signalId: number | null = null
-                let window: any = null
+                let window: Astal.Window | null = null
                 let retryCount = 0
                 const MAX_RETRIES = 50  // 5 seconds max (50 × 100ms)
 

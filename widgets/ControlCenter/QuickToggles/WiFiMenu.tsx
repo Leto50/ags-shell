@@ -54,11 +54,17 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
     })
 
     const handleNetworkClick = async (ap: any) => {
+        // Validate access point object
+        if (!ap || !ap.ssid) {
+            logger.warn("Invalid access point object")
+            return
+        }
+
         if (ap.active) {
             return
         }
 
-        const isSecured = ap.flags > 0 || ap.wpaFlags > 0 || ap.rsnFlags > 0
+        const isSecured = (ap.flags ?? 0) > 0 || (ap.wpaFlags ?? 0) > 0 || (ap.rsnFlags ?? 0) > 0
         const isSaved = savedNetworks().includes(ap.ssid)
 
         if (isSecured && !isSaved) {
