@@ -4,11 +4,11 @@
  */
 
 // Variables and theming
-@import 'styles/variables';
+@use 'styles/variables';
 
 // Component styles
-@import 'styles/control-center';
-@import 'styles/bar';
-@import 'styles/tray-menu';
-@import 'styles/notifications-center';
-@import 'styles/notifications-popup';
+@use 'styles/control-center';
+@use 'styles/bar';
+@use 'styles/tray-menu';
+@use 'styles/notifications-center';
+@use 'styles/notifications-popup';
