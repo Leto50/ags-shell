@@ -1,5 +1,6 @@
 import GLib from "gi://GLib"
 import { logger } from "../../../lib/logger"
+import { GVariantValue } from "../../../lib/types"
 
 export interface MenuItem {
     id: number
@@ -9,8 +10,8 @@ export interface MenuItem {
     toggleState?: number     // 0 = off, 1 = on
     type?: string            // "separator"
     iconName?: string
-    iconData?: any           // Custom icon data
-    shortcut?: any           // Keyboard shortcut
+    iconData?: GLib.Variant  // Custom icon data (GVariant)
+    shortcut?: GLib.Variant  // Keyboard shortcut (GVariant array)
     disposition?: string     // "normal", "alert", "warning", "informative"
     childrenDisplay?: string // "submenu" for nested menus
     accessibleDesc?: string  // Accessibility description
@@ -18,7 +19,7 @@ export interface MenuItem {
 }
 
 // Recursively parse a menu item variant and its children
-export function parseMenuItem(itemVariant: any): MenuItem | null {
+export function parseMenuItem(itemVariant: GLib.Variant): MenuItem | null {
     try {
         // Unwrap variant if needed
         let unwrapped = itemVariant
@@ -39,8 +40,8 @@ export function parseMenuItem(itemVariant: any): MenuItem | null {
         let toggleState: number | undefined
         let type: string | undefined
         let iconName: string | undefined
-        let iconData: any
-        let shortcut: any
+        let iconData: GLib.Variant | undefined
+        let shortcut: GLib.Variant | undefined
         let disposition: string | undefined
         let childrenDisplay: string | undefined
         let accessibleDesc: string | undefined
@@ -112,7 +113,7 @@ export function parseMenuItem(itemVariant: any): MenuItem | null {
 }
 
 // Format shortcut from DBusMenu format to display string
-export function formatShortcut(shortcutVariant: any): string {
+export function formatShortcut(shortcutVariant: GLib.Variant | undefined): string {
     if (!shortcutVariant) return ''
 
     try {

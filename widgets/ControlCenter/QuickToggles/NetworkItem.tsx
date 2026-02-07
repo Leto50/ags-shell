@@ -1,8 +1,9 @@
 import { Gtk } from "ags/gtk4"
 import { createBinding } from "ags"
+import { WiFiAccessPoint } from "../../../lib/types"
 
 interface NetworkItemProps {
-    accessPoint: any
+    accessPoint: WiFiAccessPoint
     onClicked: () => void
 }
 

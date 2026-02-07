@@ -7,6 +7,7 @@ import { execAsync } from "ags/process"
 import { NetworkItem } from "./NetworkItem"
 import { PasswordDialog } from "./PasswordDialog"
 import { logger } from "../../../lib/logger"
+import { WiFiAccessPoint } from "../../../lib/types"
 
 interface WiFiMenuProps {
     onBack: () => void
@@ -53,7 +54,7 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
         return Array.from(unique.values()).sort((a, b) => b.strength - a.strength)
     })
 
-    const handleNetworkClick = async (ap: any) => {
+    const handleNetworkClick = async (ap: WiFiAccessPoint) => {
         // Validate access point object
         if (!ap || !ap.ssid) {
             logger.warn("Invalid access point object")

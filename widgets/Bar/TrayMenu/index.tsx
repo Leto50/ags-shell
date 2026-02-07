@@ -2,13 +2,14 @@ import { Astal, Gtk, Gdk } from "ags/gtk4"
 import app from "ags/gtk4/app"
 import { config } from "../../../config"
 import { logger } from "../../../lib/logger"
+import { TrayItem } from "../../../lib/types"
 import { getMenuLayoutViaDBus } from "./DBusMenu"
 import { buildMenuFromData, resetMenuStack } from "./MenuBuilder"
 
 let contentBox: Gtk.Box | null = null
 let menuWindow: Astal.Window | null = null
 
-export async function showTrayMenu(item: any, buttonX: number) {
+export async function showTrayMenu(item: TrayItem, buttonX: number) {
     logger.debug("showTrayMenu called", {
         itemId: item.item_id,
         menuPath: item.menu_path

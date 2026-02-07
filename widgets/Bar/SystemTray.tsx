@@ -4,6 +4,7 @@ import AstalTray from "gi://AstalTray?version=0.1"
 import { showTrayMenu } from "./TrayMenu/index"
 import { config } from "../../config"
 import { logger } from "../../lib/logger"
+import { TrayItem } from "../../lib/types"
 
 export default function SystemTray() {
     const tray = AstalTray.get_default()
@@ -14,7 +15,7 @@ export default function SystemTray() {
             spacing={config.systemTray.iconSpacing}
             $={(self) => {
                 // Track signal IDs for cleanup
-                let signalIds: Array<{ item: any, ids: number[] }> = []
+                let signalIds: Array<{ item: TrayItem, ids: number[] }> = []
 
                 const rebuild = () => {
                     // Disconnect old signals before clearing
