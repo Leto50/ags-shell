@@ -7,7 +7,7 @@ window.bar {
 
 .bar-container {
     background: gtkalpha($window_bg_color, $alpha-strong);
-    padding: $space-2 $space-2;
+    padding: $space-1 $space-2;
     border-radius: $radius-md;
     box-shadow: $shadow-sm;
 }
