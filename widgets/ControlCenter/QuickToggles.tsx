@@ -5,12 +5,13 @@ import GLib from "gi://GLib"
 import { createBinding, createState } from "ags"
 import { execAsync } from "ags/process"
 import { network, bluetooth, notification } from "../../lib/services"
+import { uiIcons } from "./utils/icons"
 
 interface QuickTogglesProps {
     onNavigate: (page: "wifi" | "bluetooth") => void
 }
 
-function ToggleButton({ label_bind, on_click, className }) {
+function ToggleButton({ icon_bind, on_click, className }) {
     return (
         <button
             class={className}
@@ -18,18 +19,18 @@ function ToggleButton({ label_bind, on_click, className }) {
             valign={Gtk.Align.CENTER}
             halign={Gtk.Align.CENTER}
         >
-          <image icon-name={label_bind} />
+          <label label={icon_bind} cssClasses={["icon-label"]} />
         </button>
     )
 }
 
-function CardButton({ label_bind, on_click, className }) {
+function CardButton({ icon_bind, on_click, className }) {
     return (
         <button
             class={className}
             onClicked={on_click}
         >
-          <image icon-name={label_bind} />
+          <label label={icon_bind} cssClasses={["icon-label"]} />
         </button>
     )
 }
@@ -113,16 +114,16 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
     }
 
     const wifiIconBinding = wifiEnabledBinding((e) =>
-        e ? "network-wireless-symbolic" : "network-wireless-offline-symbolic"
+        e ? '󰤨' : '󰤭'
     )
     const bluetoothIconBinding = bluetoothEnabledBinding((e) =>
-        e ? "bluetooth-active-symbolic" : "bluetooth-disabled-symbolic"
+        e ? '󰂯' : '󰂲'
     )
     const notificationIconBinding = notificationEnabledBinding((e) =>
-        e ? "notifications-disabled-symbolic" : "preferences-system-notifications-symbolic"
+        e ? '󰂛' : '󰂚'
     )
     const hypridleIconBinding = hypridleEnabled((e) =>
-        e ? "weather-clear-night-symbolic" : "weather-clear-symbolic"
+        e ? '󰤄' : '󰖙'
     )
 
     const wifiClassBinding = wifiEnabledBinding((e) => e ? "active circular button" : "circular button")
@@ -146,7 +147,7 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
                 <box orientation={Gtk.Orientation.HORIZONTAL} spacing={15}>
                     <ToggleButton
                         className={wifiClassBinding}
-                        label_bind={wifiIconBinding}
+                        icon_bind={wifiIconBinding}
                         on_click={() => network.wifi.enabled = !network.wifi.enabled}
                     />
                     <button
@@ -155,7 +156,7 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
                     >
                         <box spacing={8}>
                             <label label={wifiLabel} class="body" xalign={0} hexpand={true} />
-                            <image iconName="go-next-symbolic" />
+                            <label label={uiIcons.chevronRight} cssClasses={["icon-label"]} />
                         </box>
                     </button>
                 </box>
@@ -165,7 +166,7 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
                     <box orientation={Gtk.Orientation.HORIZONTAL} spacing={15}>
                         <ToggleButton
                             className={bluetoothClassBinding}
-                            label_bind={bluetoothIconBinding}
+                            icon_bind={bluetoothIconBinding}
                             on_click={() => bluetooth.toggle()}
                         />
                         <button
@@ -174,14 +175,14 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
                         >
                             <box spacing={8}>
                                 <label label={bluetoothLabel} class="body" xalign={0} hexpand={true} />
-                                <image iconName="go-next-symbolic" />
+                                <label label={uiIcons.chevronRight} cssClasses={["icon-label"]} />
                             </box>
                         </button>
                     </box>
                 ) : (
                     <box orientation={Gtk.Orientation.HORIZONTAL} spacing={15}>
                         <button class="circular" sensitive={false}>
-                            <image icon-name="bluetooth-disabled-symbolic" />
+                            <label label="󰂲" cssClasses={["icon-label"]} />
                         </button>
                         <label label="Bluetooth ⚠️" class="body"/>
                     </box>
@@ -191,7 +192,7 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
                 <box orientation={Gtk.Orientation.HORIZONTAL} spacing={15}>
                     <ToggleButton
                         className={hypridleClassBinding}
-                        label_bind={hypridleIconBinding}
+                        icon_bind={hypridleIconBinding}
                         on_click={toggleHypridle}
                     />
                     <label label="Idle" class="body" />
@@ -205,7 +206,7 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
                 <box orientation={Gtk.Orientation.HORIZONTAL} spacing={15} class="card card-padding">
                     <ToggleButton
                         className={notificationClassBinding}
-                        label_bind={notificationIconBinding}
+                        icon_bind={notificationIconBinding}
                         on_click={() => notification.set_dont_disturb(!notification.dont_disturb)}
                     />
                     <label label="Do Not Disturb" class="body" hexpand={true} halign={Gtk.Align.FILL} xalign={0} />
@@ -218,12 +219,12 @@ export default function QuickToggles({ onNavigate }: QuickTogglesProps) {
                 >
                     <CardButton
                         className="card card-padding"
-                        label_bind="night-light-symbolic"
+                        icon_bind="󰒲"
                         on_click={() => execAsync(["sh", "-c", "systemctl suspend || loginctl suspend"]).catch((err) => logger.error("Failed to suspend:", err))}
                     />
                     <CardButton
                         className="card card-padding"
-                        label_bind="phone-symbolic"
+                        icon_bind="󰄜"
                         on_click={() => {}}
                     />
                 </box>

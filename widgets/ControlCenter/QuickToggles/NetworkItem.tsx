@@ -1,6 +1,7 @@
 import { Gtk } from "ags/gtk4"
 import { createBinding } from "ags"
 import { WiFiAccessPoint } from "../../../lib/types"
+import { getWifiIconFromStrength, uiIcons } from "../utils/icons"
 
 interface NetworkItemProps {
     accessPoint: WiFiAccessPoint
@@ -8,16 +9,7 @@ interface NetworkItemProps {
 }
 
 export function NetworkItem({ accessPoint, onClicked }: NetworkItemProps) {
-    // Get signal strength icon
-    const getSignalIcon = (strength: number): string => {
-        if (strength >= 80) return "network-wireless-signal-excellent-symbolic"
-        if (strength >= 60) return "network-wireless-signal-good-symbolic"
-        if (strength >= 40) return "network-wireless-signal-ok-symbolic"
-        if (strength >= 20) return "network-wireless-signal-weak-symbolic"
-        return "network-wireless-signal-none-symbolic"
-    }
-
-    const signalIcon = getSignalIcon(accessPoint.strength)
+    const signalIcon = getWifiIconFromStrength(accessPoint.strength)
     // Network is secured if it has flags, wpaFlags, or rsnFlags set
     const isSecured = accessPoint.flags > 0 || accessPoint.wpaFlags > 0 || accessPoint.rsnFlags > 0
     const isActive = accessPoint.active
@@ -33,7 +25,10 @@ export function NetworkItem({ accessPoint, onClicked }: NetworkItemProps) {
                 hexpand={true}
             >
                 {/* Signal Strength Icon */}
-                <image iconName={signalIcon} />
+                <label
+                    label={signalIcon}
+                    cssClasses={["icon-label"]}
+                />
 
                 {/* SSID */}
                 <label
@@ -44,14 +39,16 @@ export function NetworkItem({ accessPoint, onClicked }: NetworkItemProps) {
                 />
 
                 {/* Security Icon */}
-                <image
-                    iconName="network-wireless-encrypted-symbolic"
+                <label
+                    label="󰌾"
+                    cssClasses={["icon-label"]}
                     visible={isSecured}
                 />
 
                 {/* Connected Indicator */}
-                <image
-                    iconName="object-select-symbolic"
+                <label
+                    label={uiIcons.check}
+                    cssClasses={["icon-label"]}
                     visible={isActive}
                 />
             </box>

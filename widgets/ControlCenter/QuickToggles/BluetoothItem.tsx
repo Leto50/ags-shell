@@ -5,6 +5,7 @@ import Gio from "gi://Gio"
 import GLib from "gi://GLib"
 import { logger } from "../../../lib/logger"
 import { BluetoothDevice } from "../../../lib/types"
+import { getBluetoothDeviceIcon, uiIcons } from "../utils/icons"
 
 interface BluetoothItemProps {
     device: BluetoothDevice
@@ -175,10 +176,10 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
 
     const indicatorIcon = createComputed(() => {
         const error = errorMessage()
-        if (error !== "") return "dialog-warning-symbolic"
-        if (isPairing()) return "bluetooth-acquiring-symbolic"
-        if (isConnectingBinding.get()) return "bluetooth-acquiring-symbolic"
-        if (isConnectedBinding.get()) return "object-select-symbolic"
+        if (error !== "") return "⚠"
+        if (isPairing()) return "󰂴"
+        if (isConnectingBinding.get()) return "󰂴"
+        if (isConnectedBinding.get()) return uiIcons.check
         return ""
     })
 
@@ -220,7 +221,10 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
                     hexpand={true}
                 >
                     {/* Device Icon */}
-                    <image iconName={device.icon || "bluetooth-symbolic"} />
+                    <label
+                        label={getBluetoothDeviceIcon(device.icon || "bluetooth")}
+                        cssClasses={["icon-label"]}
+                    />
 
                     {/* Device Name */}
                     <label
@@ -245,8 +249,9 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
                     />
 
                     {/* Connecting/Connected/Error Indicator */}
-                    <image
-                        iconName={indicatorIcon}
+                    <label
+                        label={indicatorIcon}
+                        cssClasses={["icon-label"]}
                         visible={indicatorVisible}
                     />
                 </box>
@@ -259,7 +264,7 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
                 visible={isPairedBinding}
                 tooltipText="Forget this device"
             >
-                <image iconName="user-trash-symbolic" />
+                <label label={uiIcons.trash} cssClasses={["icon-label"]} />
             </button>
         </box>
     )

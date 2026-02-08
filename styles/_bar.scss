@@ -33,7 +33,7 @@ window.bar {
 
 .bar-button.app-menu-button label {
     font-size: $bar-element-size;
-    font-family: "JetBrainsMono Nerd Font Propo";
+    font-family: $font-family-mono;
     padding: 0 0.2em;
     line-height: 1;
 }
@@ -64,7 +64,7 @@ window.bar {
 .bar-button.workspace .workspace-label-with-icons {
     font-size: $bar-element-size;
     opacity: 0.8;
-    font-family: "JetBrainsMono Nerd Font Propo";
+    font-family: $font-family-mono;
     font-weight: $font-weight-medium;
     min-width: 0;
     min-height: 0;
@@ -118,7 +118,7 @@ window.bar {
     margin: 0;
     padding: 0 0.2em;
     font-size: $bar-element-size;
-    font-family: "JetBrainsMono Nerd Font Propo";
+    font-family: $font-family-mono;
     font-weight: 400;
     min-width: 0;
     min-height: 0;
@@ -135,7 +135,7 @@ window.bar {
 }
 
 .control-center-toggle {
-    font-family: "JetBrainsMono Nerd Font Propo";
+    font-family: $font-family-mono;
     background: transparent;
 }
 

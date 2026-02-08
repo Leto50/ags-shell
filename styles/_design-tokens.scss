@@ -37,17 +37,24 @@ $size-icon-lg: 1.5rem;      // 24px
 // ============================================
 // TYPOGRAPHY
 // ============================================
+// Font families
+$font-family-mono: "JetBrainsMono Nerd Font Propo", monospace;
+$font-family-sans: system-ui, -apple-system, sans-serif;
+
+// Font sizes
 $font-size-xs: 0.75rem;     // 12px
 $font-size-sm: 0.875rem;    // 14px
 $font-size-base: 1rem;      // 16px
 $font-size-lg: 1.125rem;    // 18px
 $font-size-xl: 1.25rem;     // 20px
 
+// Font weights
 $font-weight-normal: 400;
 $font-weight-medium: 500;
 $font-weight-semibold: 600;
 $font-weight-bold: 700;
 
+// Line heights
 $line-height-tight: 1.25;
 $line-height-normal: 1.5;
 $line-height-relaxed: 1.75;

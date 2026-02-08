@@ -9,6 +9,7 @@ import { PasswordDialog } from "./PasswordDialog"
 import { logger } from "../../../lib/logger"
 import { WiFiAccessPoint } from "../../../lib/types"
 import { toastManager } from "../../Toast/ToastManager"
+import { uiIcons } from "../utils/icons"
 
 interface WiFiMenuProps {
     onBack: () => void
@@ -156,7 +157,7 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
             {/* Header with back button */}
             <box orientation={Gtk.Orientation.HORIZONTAL} spacing={12} cssClasses={["menu-header"]}>
                 <button cssClasses={["icon-button"]} onClicked={onBack}>
-                    <image iconName="go-previous-symbolic" />
+                    <label label={uiIcons.back} cssClasses={["icon-label"]} />
                 </button>
                 <label label="WiFi Networks" cssClasses={["menu-title"]} xalign={0} hexpand={true} />
                 <button
@@ -175,7 +176,7 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
                             halign={Gtk.Align.CENTER}
                             valign={Gtk.Align.CENTER}
                         />
-                        <image iconName="view-refresh-symbolic" visible={isScanning((s) => !s)} />
+                        <label label={uiIcons.refresh} cssClasses={["icon-label"]} visible={isScanning((s) => !s)} />
                     </box>
                 </button>
             </box>
@@ -230,7 +231,7 @@ export function WiFiMenu({ onBack }: WiFiMenuProps) {
                     }}
                 >
                     <box spacing={8}>
-                        <image iconName="emblem-system-symbolic" />
+                        <label label={uiIcons.settings} cssClasses={["icon-label"]} />
                         <label label="Advanced Settings" />
                     </box>
                 </button>

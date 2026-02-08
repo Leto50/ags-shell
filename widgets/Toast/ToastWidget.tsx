@@ -6,23 +6,24 @@
 import { Gtk, Astal } from "ags/gtk4"
 import { toastManager, Toast } from "./ToastManager"
 import { createState, onCleanup, For } from "ags"
+import { uiIcons } from "../ControlCenter/utils/icons"
 
 interface ToastItemProps {
     toast: Toast
 }
 
 function ToastItem({ toast }: ToastItemProps) {
-    const getIconName = () => {
+    const getIcon = () => {
         switch (toast.type) {
             case "success":
-                return "emblem-ok-symbolic"
+                return "󰄬" // check
             case "error":
-                return "dialog-error-symbolic"
+                return "󰅖" // close
             case "warning":
-                return "dialog-warning-symbolic"
+                return "⚠"  // warning
             case "info":
             default:
-                return "dialog-information-symbolic"
+                return "󰋽" // info
         }
     }
 
@@ -42,13 +43,13 @@ function ToastItem({ toast }: ToastItemProps) {
 
     return (
         <box class={getCssClass()} orientation={Gtk.Orientation.HORIZONTAL} spacing={12}>
-            <image iconName={getIconName()} />
+            <label label={getIcon()} cssClasses={["icon-label"]} />
             <label label={toast.message} hexpand={true} xalign={0} wrap={true} maxWidthChars={40} />
             <button
                 class="toast-close"
                 onClicked={() => toastManager.dismiss(toast.id)}
             >
-                <image iconName="window-close-symbolic" />
+                <label label={uiIcons.close} cssClasses={["icon-label"]} />
             </button>
         </box>
     )

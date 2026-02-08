@@ -6,6 +6,7 @@ import { notificationManager } from "./NotificationManager"
 import NotificationItem from "./NotificationItem"
 import { config } from "../../config"
 import { paginateItems } from "./utils/pagination"
+import { uiIcons } from "../ControlCenter/utils/icons"
 
 type Page = "calendar" | "notifications"
 
@@ -314,7 +315,7 @@ export default function NotificationCenter() {
                                         hexpand={true}
                                     >
                                         <box orientation={Gtk.Orientation.HORIZONTAL} spacing={6} halign={Gtk.Align.CENTER}>
-                                            <image iconName="edit-clear-all-symbolic" pixelSize={16} />
+                                            <label label={uiIcons.trash} cssClasses={["icon-label"]} />
                                             <label label="Clear all" />
                                         </box>
                                     </button>

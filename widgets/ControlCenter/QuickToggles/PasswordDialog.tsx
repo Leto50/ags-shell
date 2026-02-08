@@ -83,7 +83,7 @@ export function PasswordDialog({ network, onClose, onSuccess }: PasswordDialogPr
                 cssClasses={["password-input-box"]}
                 spacing={8}
             >
-                <image iconName="network-wireless-encrypted-symbolic" />
+                <label label="󰤪" cssClasses={["icon-label"]} />
                 <entry
                     placeholderText="Enter Password..."
                     visibility={false}

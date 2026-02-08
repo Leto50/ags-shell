@@ -36,6 +36,12 @@ window.control-center {
     pointer-events: none;
 }
 
+.icon-label {
+    font-family: $font-family-mono;
+    font-size: 1.2em;
+    line-height: 1;
+}
+
 .button {
     margin: 0px;
 }

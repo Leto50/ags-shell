@@ -3,6 +3,7 @@ import { logger } from "../../lib/logger"
 import Notifd from "gi://AstalNotifd"
 import { notificationManager } from "./NotificationManager"
 import { config } from "../../config"
+import { uiIcons } from "../ControlCenter/utils/icons"
 
 interface NotificationItemProps {
     notification: Notifd.Notification
@@ -90,7 +91,7 @@ export default function NotificationItem({ notification }: NotificationItemProps
                         tooltipText="Dismiss"
                         valign={Gtk.Align.START}
                     >
-                        <image iconName="window-close-symbolic" pixelSize={16} />
+                        <label label={uiIcons.close} cssClasses={["icon-label"]} />
                     </button>
                 </box>
 

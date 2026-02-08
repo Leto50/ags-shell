@@ -3,6 +3,7 @@ import { logger } from "../../../lib/logger"
 import Bluetooth from "gi://AstalBluetooth"
 import { createBinding, For, onCleanup } from "ags"
 import { BluetoothItem } from "./BluetoothItem"
+import { uiIcons } from "../utils/icons"
 
 interface BluetoothMenuProps {
     onBack: () => void
@@ -67,7 +68,7 @@ export function BluetoothMenu({ onBack }: BluetoothMenuProps) {
             {/* Header with back button */}
             <box orientation={Gtk.Orientation.HORIZONTAL} spacing={12} cssClasses={["menu-header"]}>
                 <button cssClasses={["icon-button"]} onClicked={onBack}>
-                    <image iconName="go-previous-symbolic" />
+                    <label label={uiIcons.back} cssClasses={["icon-label"]} />
                 </button>
                 <label label="Bluetooth Devices" cssClasses={["menu-title"]} xalign={0} hexpand={true} />
             </box>
@@ -151,7 +152,7 @@ export function BluetoothMenu({ onBack }: BluetoothMenuProps) {
                     }}
                 >
                     <box spacing={8}>
-                        <image iconName="emblem-system-symbolic" />
+                        <label label={uiIcons.settings} cssClasses={["icon-label"]} />
                         <label label="Advanced Settings" />
                     </box>
                 </button>
