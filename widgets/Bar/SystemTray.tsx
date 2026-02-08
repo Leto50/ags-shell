@@ -2,6 +2,7 @@ import { Gtk, Gdk } from "ags/gtk4"
 import { onCleanup } from "ags"
 import AstalTray from "gi://AstalTray?version=0.1"
 import { showTrayMenu } from "./TrayMenu/index"
+import { showTrayTooltip } from "./TrayTooltip"
 import { config } from "../../config"
 import { logger } from "../../lib/logger"
 import { TrayItem } from "../../lib/types"
@@ -32,10 +33,25 @@ export default function SystemTray() {
                     // Add tray items
                     const items = tray.get_items()
                     items.forEach(item => {
-                        const btn = new Gtk.Button({
-                            tooltipMarkup: item.tooltipMarkup,
-                        })
+                        const btn = new Gtk.Button()
                         btn.set_css_classes(["bar-button", "tray-item"])
+
+                        // Hover: show tooltip
+                        const hoverController = new Gtk.EventControllerMotion()
+                        hoverController.connect("enter", () => {
+                            let totalX = 0
+                            let widget: Gtk.Widget | null = btn
+                            while (widget) {
+                                totalX += widget.get_allocation().x
+                                const parent = widget.get_parent()
+                                if (!parent || parent === widget.get_root()) break
+                                widget = parent
+                            }
+                            const buttonCenterX = totalX + (btn.get_allocation().width / 2)
+                            showTrayTooltip(true, item.tooltipMarkup || "Tray item", buttonCenterX)
+                        })
+                        hoverController.connect("leave", () => showTrayTooltip(false))
+                        btn.add_controller(hoverController)
 
                         // Left-click: activate item
                         btn.connect("clicked", () => {
@@ -82,13 +98,8 @@ export default function SystemTray() {
                             icon.set_from_gicon(item.gicon)
                         })
 
-                        // Listen for tooltip changes
-                        const tooltipId = item.connect("notify::tooltip-markup", () => {
-                            btn.set_tooltip_markup(item.tooltipMarkup)
-                        })
-
                         // Track signal IDs for cleanup
-                        signalIds.push({ item, ids: [giconId, tooltipId] })
+                        signalIds.push({ item, ids: [giconId] })
 
                         btn.set_child(icon)
                         self.append(btn)

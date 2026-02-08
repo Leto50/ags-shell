@@ -54,3 +54,13 @@ try {
 } catch (err) {
     console.error("Hyprland service unavailable:", err)
 }
+
+// UPower service (battery monitoring)
+import UPower from "gi://UPowerGlib?version=1.0"
+
+export let upower: UPower.Client | null = null
+try {
+    upower = new UPower.Client()
+} catch (err) {
+    console.warn("UPower service unavailable:", err)
+}

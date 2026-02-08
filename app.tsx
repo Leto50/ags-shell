@@ -3,6 +3,8 @@ import { Gtk, Gdk } from "ags/gtk4"
 import Bar from "./widgets/Bar"
 import ControlCenter from "./widgets/ControlCenter"
 import TrayMenu from "./widgets/Bar/TrayMenu/index"
+import TrayTooltip from "./widgets/Bar/TrayTooltip"
+import BatteryTooltip from "./widgets/Bar/BatteryTooltip"
 import NotificationCenter from "./widgets/Notifications/NotificationCenter"
 import ToastContainer from "./widgets/Toast/ToastWidget"
 import "./widgets/Notifications/NotificationManager"  // Initialize notification manager
@@ -31,6 +33,8 @@ app.start({
 
         ControlCenter()
         TrayMenu()
+        TrayTooltip()
+        BatteryTooltip()
         NotificationCenter()
         ToastContainer()
     }

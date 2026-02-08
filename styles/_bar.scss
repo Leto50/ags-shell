@@ -108,6 +108,33 @@ window.bar {
     margin-right: $space-2;
 }
 
+.battery-indicator {
+    padding: 0 $space-2;
+    transition: color 200ms ease;
+
+    .bar-icon {
+        font-size: $bar-element-size;
+    }
+
+    &.battery-low {
+        color: #f59f00;
+    }
+
+    &.battery-critical {
+        color: #e74c3c;
+        animation: battery-pulse 2s ease-in-out infinite;
+    }
+
+    &.battery-charging {
+        color: #27ae60;
+    }
+}
+
+@keyframes battery-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
 .bar-system-tray {
     padding: $space-1 0;
     border-radius: $radius-sm;
@@ -189,6 +216,36 @@ menubutton.control-center-toggle > button:active {
     box-shadow: none;
     padding: 0;
     margin: 0;
+}
+
+/* Battery tooltip window */
+window.battery-tooltip-window {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.battery-tooltip-box {
+    background: gtkalpha($window_bg_color, $alpha-strong);
+    border-radius: $radius-md;
+    padding: $space-2 $space-3;
+
+    label {
+        font-size: $font-size-sm;
+    }
+}
+
+/* Tray tooltip window */
+window.tray-tooltip-window {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.tray-tooltip-box {
+    background: gtkalpha($window_bg_color, $alpha-strong);
+    border-radius: $radius-md;
+    padding: $space-2 $space-3;
+
+    label {
+        font-size: $font-size-sm;
+    }
 }
 
 /* Tray menu window - same style as control center */

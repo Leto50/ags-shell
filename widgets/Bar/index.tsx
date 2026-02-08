@@ -3,6 +3,7 @@ import app from "ags/gtk4/app"
 import AppMenuButton from "./AppMenuButton"
 import WorkspaceButtons from "./WorkspaceButtons"
 import SystemTray from "./SystemTray"
+import BatteryIndicator from "./BatteryIndicator"
 import ControlCenterToggle from "./ControlCenterToggle"
 import DateTimeSection from "./DateTimeSection"
 import { config } from "../../config"
@@ -32,6 +33,7 @@ export default function Bar(gdkmonitor: Gdk.Monitor) {
 
                 <box $type="end" spacing={config.bar.widgetSpacing} halign={Gtk.Align.END}>
                     <SystemTray />
+                    <BatteryIndicator />
                     <ControlCenterToggle />
                     <DateTimeSection />
                 </box>
