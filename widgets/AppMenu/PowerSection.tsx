@@ -26,7 +26,7 @@ function executeAction(action: PowerAction) {
 
 export default function PowerSection() {
     return (
-        <box spacing={8} homogeneous>
+        <box spacing={15} homogeneous>
             {POWER_ACTIONS.map((action) => (
                 <button
                     class={`card card-padding${action.destructive ? " destructive" : ""}`}

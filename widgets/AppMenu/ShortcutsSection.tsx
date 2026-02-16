@@ -33,7 +33,7 @@ function executeShortcut(shortcut: Shortcut) {
 
 export default function ShortcutsSection() {
     return (
-        <box spacing={8} homogeneous>
+        <box spacing={15} homogeneous>
                 {SHORTCUTS.map((shortcut) => (
                     <button
                         class="card card-padding"
