@@ -1,6 +1,7 @@
 import { Gtk, Astal } from "ags/gtk4"
 import { logger } from "../../lib/logger"
 import { createPoll } from "ags/time"
+import { interval } from "ags/time"
 import { onCleanup } from "ags"
 import app from "ags/gtk4/app"
 import { config } from "../../config"
@@ -66,8 +67,14 @@ export default function DateTimeSection() {
 
                 setupListener()
 
-                // Cleanup: disconnect signal when widget is destroyed
+                // Force full repaint every second to prevent pixel ghosting
+                // when label text changes on transparent background
+                const repaintTimer = interval(1000, () => {
+                    self.queue_draw()
+                })
+
                 onCleanup(() => {
+                    repaintTimer.cancel()
                     if (signalId !== null && window) {
                         window.disconnect(signalId)
                     }

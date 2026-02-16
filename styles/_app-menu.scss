@@ -1,0 +1,76 @@
+@use 'variables' as *;
+@use 'design-tokens' as *;
+
+// Window (same pattern as control-center, tray-menu)
+window.app-menu {
+    background-color: rgba(0, 0, 0, $alpha-hover);
+    border-radius: $radius-lg;
+}
+
+.app-menu-box {
+    border-radius: $radius-lg;
+    background: gtkalpha($window_bg_color, $alpha-strong);
+    padding: $space-4;
+    min-width: 17rem;
+}
+
+
+// Power card destructive hover
+.card.destructive:hover {
+    background: gtkalpha($error_color, $alpha-selected);
+}
+
+// Active state on bar button (same as .control-center-toggle.active)
+.bar-button.app-menu-button.active {
+    background: gtkalpha($window_fg_color, $alpha-active);
+}
+
+// Monitoring rows - stacked: label line on top, full-width bar below
+.monitor-row {
+    .icon-label {
+        font-size: $font-size-sm;
+    }
+
+    .monitor-label {
+        font-size: $font-size-xs;
+    }
+
+    .monitor-value {
+        font-size: $font-size-xs;
+        font-family: $font-family-mono;
+        opacity: $alpha-solid;
+    }
+}
+
+// LevelBar - scoped to app-menu
+.app-menu-box levelbar {
+    min-height: $space-2;
+    border-radius: $radius-sm;
+
+    trough {
+        min-height: $space-2;
+        border-radius: $radius-sm;
+        background: gtkalpha($window_fg_color, $alpha-hover);
+    }
+
+    block.filled {
+        min-height: $space-2;
+        border-radius: $radius-sm;
+        background: $accent_bg_color;
+    }
+
+    block.empty {
+        min-height: $space-2;
+        border-radius: $radius-sm;
+        background: transparent;
+    }
+}
+
+// Temperature warning colors
+.app-menu-box levelbar.temp-warm block.filled {
+    background: $warning_color;
+}
+
+.app-menu-box levelbar.temp-hot block.filled {
+    background: $error_color;
+}

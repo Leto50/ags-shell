@@ -2,6 +2,7 @@ import app from "ags/gtk4/app"
 import { Gtk, Gdk } from "ags/gtk4"
 import Bar from "./widgets/Bar"
 import ControlCenter from "./widgets/ControlCenter"
+import AppMenu from "./widgets/AppMenu"
 import TrayMenu from "./widgets/Bar/TrayMenu/index"
 import TrayTooltip from "./widgets/Bar/TrayTooltip"
 import BatteryTooltip from "./widgets/Bar/BatteryTooltip"
@@ -32,6 +33,7 @@ app.start({
         }
 
         ControlCenter()
+        AppMenu()
         TrayMenu()
         TrayTooltip()
         BatteryTooltip()
