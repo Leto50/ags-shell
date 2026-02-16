@@ -9,9 +9,10 @@ import BrightnessSlider from "./BrightnessSlider"
 import MediaPlayer from "./MediaPlayer/index"
 import { WiFiMenu } from "./QuickToggles/WiFiMenu"
 import { BluetoothMenu } from "./QuickToggles/BluetoothMenu"
+import { AudioMenu } from "./QuickToggles/AudioMenu"
 import { config } from "../../config"
 
-type Page = "main" | "wifi" | "bluetooth"
+type Page = "main" | "wifi" | "bluetooth" | "audio"
 
 export default function ControlCenter() {
     let contentBox: Gtk.Box | null = null
@@ -107,7 +108,7 @@ export default function ControlCenter() {
                     visible={currentPage((page) => page === "main")}
                 >
                     <QuickToggles onNavigate={navigateTo} />
-                    <VolumeSlider />
+                    <VolumeSlider onNavigate={navigateTo} />
                     <BrightnessSlider />
                     <MediaPlayer />
                 </box>
@@ -120,6 +121,11 @@ export default function ControlCenter() {
                 {/* Bluetooth Menu Page */}
                 <With value={currentPage((page) => page === "bluetooth")}>
                     {(isBluetooth) => isBluetooth && <BluetoothMenu onBack={goBack} />}
+                </With>
+
+                {/* Audio Menu Page */}
+                <With value={currentPage((page) => page === "audio")}>
+                    {(isAudio) => isAudio && <AudioMenu onBack={goBack} />}
                 </With>
             </box>
         </window>

@@ -212,6 +212,35 @@ export const getBluetoothBatteryIcon = (percentage: number): string => {
     return batteryIcons[threshold]
 }
 
+// Audio device type icons with regex patterns (matches WirePlumber description or icon name)
+const audioDeviceIconMap: [RegExp, string][] = [
+    [/headphone/i, '󰋋'],
+    [/headset/i, '󰋎'],
+    [/hdmi|display/i, '󰡁'],
+    [/usb/i, '󱊞'],
+    [/bluetooth|bluez/i, '󰂰'],
+    [/speaker/i, '󰓃'],
+    [/analog/i, '󰕾'],
+    [/digital/i, '󰤽'],
+]
+
+/**
+ * Get audio device icon from WirePlumber description or icon name
+ * @param descOrIcon Device description or icon name
+ * @returns Nerdfonts glyph
+ */
+export const getAudioDeviceIcon = (descOrIcon: string): string => {
+    const cleaned = descOrIcon.replace(/-symbolic$/, '')
+
+    for (const [pattern, icon] of audioDeviceIconMap) {
+        if (pattern.test(cleaned)) {
+            return icon
+        }
+    }
+
+    return '󰕾' // Fallback to generic speaker
+}
+
 // Common UI icons
 export const uiIcons = {
     back: '󰁍',

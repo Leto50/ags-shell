@@ -8,7 +8,7 @@ import { network, bluetooth, notification } from "../../lib/services"
 import { uiIcons } from "./utils/icons"
 
 interface QuickTogglesProps {
-    onNavigate: (page: "wifi" | "bluetooth") => void
+    onNavigate: (page: "wifi" | "bluetooth" | "audio") => void
 }
 
 function ToggleButton({ icon_bind, on_click, className }) {

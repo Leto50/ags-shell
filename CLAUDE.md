@@ -41,6 +41,8 @@ When a blocking operation is discovered:
 ├── widgets/
 │   └── ControlCenter/
 │       └── QuickToggles/
+│           ├── AudioItem.tsx
+│           ├── AudioMenu.tsx
 │           ├── BluetoothItem.tsx
 │           ├── BluetoothMenu.tsx
 │           ├── WiFiMenu.tsx

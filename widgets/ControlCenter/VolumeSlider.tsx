@@ -1,10 +1,16 @@
 import { Gtk } from "ags/gtk4"
-import { createBinding, onCleanup } from "ags"
-import { speaker } from "../../lib/services"
+import { onCleanup } from "ags"
+import { audio } from "../../lib/services"
+import { uiIcons } from "./utils/icons"
 
-export default function VolumeSlider() {
-    // Handle case where audio service is unavailable
-    if (!speaker) {
+type Page = "main" | "wifi" | "bluetooth" | "audio"
+
+interface VolumeSliderProps {
+    onNavigate?: (page: Page) => void
+}
+
+export default function VolumeSlider({ onNavigate }: VolumeSliderProps) {
+    if (!audio) {
         return (
             <box
                 orientation={Gtk.Orientation.VERTICAL}
@@ -16,29 +22,109 @@ export default function VolumeSlider() {
         )
     }
 
-    const volumeBinding = createBinding(speaker, "volume")
+    const audioObj = audio.audio
 
     return (
         <box
             orientation={Gtk.Orientation.VERTICAL}
             class="control-section card card-padding"
         >
-            <label label="Volume" halign={Gtk.Align.START} class="caption-heading" />
+            {/* Header: label + device name button */}
+            <box orientation={Gtk.Orientation.HORIZONTAL} spacing={8}>
+                <label label="Volume" halign={Gtk.Align.START} class="caption-heading" hexpand={true} />
+                {onNavigate && (
+                    <button
+                        cssClasses={["audio-device-label"]}
+                        onClicked={() => onNavigate("audio")}
+                    >
+                        <box spacing={4}>
+                            <label
+                                cssClasses={["caption"]}
+                                ellipsize={3}
+                                maxWidthChars={20}
+                                $={(self) => {
+                                    let currentSpeaker = audioObj.default_speaker
+                                    let descSignalId: number | null = null
+
+                                    const update = () => {
+                                        self.label = currentSpeaker?.description ?? "No Output"
+                                    }
+
+                                    const connectDesc = () => {
+                                        update()
+                                        if (currentSpeaker) {
+                                            descSignalId = currentSpeaker.connect("notify::description", update)
+                                        }
+                                    }
+
+                                    const disconnectDesc = () => {
+                                        if (descSignalId !== null && currentSpeaker) {
+                                            currentSpeaker.disconnect(descSignalId)
+                                            descSignalId = null
+                                        }
+                                    }
+
+                                    connectDesc()
+
+                                    const speakerSignalId = audioObj.connect("notify::default-speaker", () => {
+                                        disconnectDesc()
+                                        currentSpeaker = audioObj.default_speaker
+                                        connectDesc()
+                                    })
+
+                                    onCleanup(() => {
+                                        disconnectDesc()
+                                        audioObj.disconnect(speakerSignalId)
+                                    })
+                                }}
+                            />
+                            <label label={uiIcons.chevronRight} cssClasses={["icon-label"]} />
+                        </box>
+                    </button>
+                )}
+            </box>
             <overlay>
                 <slider
-                    value={volumeBinding}
                     min={0}
                     max={1}
                     $={(self) => {
-                        const signalId = self.connect("value-changed", () => {
-                            if (speaker) {
-                                speaker.volume = self.value
+                        let currentSpeaker = audioObj.default_speaker
+                        let volumeSignalId: number | null = null
+
+                        const connectVolume = () => {
+                            if (currentSpeaker) {
+                                self.value = currentSpeaker.volume
+                                volumeSignalId = currentSpeaker.connect("notify::volume", () => {
+                                    self.value = currentSpeaker!.volume
+                                })
+                            }
+                        }
+
+                        const disconnectVolume = () => {
+                            if (volumeSignalId !== null && currentSpeaker) {
+                                currentSpeaker.disconnect(volumeSignalId)
+                                volumeSignalId = null
+                            }
+                        }
+
+                        connectVolume()
+
+                        const speakerSignalId = audioObj.connect("notify::default-speaker", () => {
+                            disconnectVolume()
+                            currentSpeaker = audioObj.default_speaker
+                            connectVolume()
+                        })
+
+                        const changeSignalId = self.connect("value-changed", () => {
+                            if (currentSpeaker) {
+                                currentSpeaker.volume = self.value
                             }
                         })
 
-                        // Cleanup: disconnect signal when widget is destroyed
                         onCleanup(() => {
-                            self.disconnect(signalId)
+                            disconnectVolume()
+                            audioObj.disconnect(speakerSignalId)
+                            self.disconnect(changeSignalId)
                         })
                     }}
                     class="volume-slider"

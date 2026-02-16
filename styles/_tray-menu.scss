@@ -140,7 +140,8 @@ cava {
 
 // Network/Device items
 .network-item,
-.bluetooth-item {
+.bluetooth-item,
+.audio-item {
     padding: $space-2 $space-3;
     border-radius: $radius-sm;
     margin: $space-1 0;
@@ -150,12 +151,14 @@ cava {
 }
 
 .network-item:hover,
-.bluetooth-item:hover {
+.bluetooth-item:hover,
+.audio-item:hover {
     background: gtkalpha($window_fg_color, $alpha-hover);
 }
 
 .network-item.active,
-.bluetooth-item.active {
+.bluetooth-item.active,
+.audio-item.active {
     background: gtkalpha($accent_bg_color, $alpha-active);
 }
 
@@ -171,6 +174,19 @@ cava {
         font-size: $font-size-xs;
         font-weight: $font-weight-semibold;
     }
+}
+
+// Audio device label (VolumeSlider header)
+.audio-device-label {
+    background: transparent;
+    border: none;
+    padding: $space-1 0;
+    border-radius: $radius-sm;
+    transition: $transition-fast;
+}
+
+.audio-device-label:hover {
+    background: gtkalpha($window_fg_color, $alpha-subtle);
 }
 
 // Section labels
