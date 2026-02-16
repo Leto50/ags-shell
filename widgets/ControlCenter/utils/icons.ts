@@ -199,6 +199,19 @@ export const getBatteryIcon = (
     return charging ? batteryIconsCharging[threshold] : batteryIcons[threshold]
 }
 
+/**
+ * Get battery icon for a Bluetooth device from its battery percentage
+ * @param percentage Battery level (0-100), or -1 if no battery
+ * @returns Nerdfonts glyph or empty string if no battery
+ */
+export const getBluetoothBatteryIcon = (percentage: number): string => {
+    if (percentage < 0) return ''
+
+    const percentages = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0]
+    const threshold = percentages.find((p) => p <= percentage) ?? 0
+    return batteryIcons[threshold]
+}
+
 // Common UI icons
 export const uiIcons = {
     back: '󰁍',

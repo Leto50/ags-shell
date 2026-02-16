@@ -1,11 +1,15 @@
 import { Gtk } from "ags/gtk4"
 import { createBinding, createComputed, createState, createEffect } from "ags"
 import Bluetooth from "gi://AstalBluetooth"
+import Battery from "gi://AstalBattery"
 import Gio from "gi://Gio"
 import GLib from "gi://GLib"
 import { logger } from "../../../lib/logger"
 import { BluetoothDevice } from "../../../lib/types"
-import { getBluetoothDeviceIcon, uiIcons } from "../utils/icons"
+import { getBluetoothDeviceIcon, getBluetoothBatteryIcon, uiIcons } from "../utils/icons"
+
+// AstalBattery UPower client (wraps UPower without segfault bindings)
+const batteryUPower = new Battery.UPower()
 
 interface BluetoothItemProps {
     device: BluetoothDevice
@@ -63,7 +67,30 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
             null
         )
 
-        logger.debug(`Successfully paired with ${device.name}`)
+        // Auto-trust paired device so it can reconnect automatically
+        const propsProxy = Gio.DBusProxy.new_for_bus_sync(
+            Gio.BusType.SYSTEM,
+            Gio.DBusProxyFlags.NONE,
+            null,
+            'org.bluez',
+            devicePath,
+            'org.freedesktop.DBus.Properties',
+            null
+        )
+
+        await propsProxy.call(
+            'Set',
+            GLib.Variant.new('(ssv)', [
+                'org.bluez.Device1',
+                'Trusted',
+                GLib.Variant.new_boolean(true),
+            ]),
+            Gio.DBusCallFlags.NONE,
+            -1,
+            null
+        )
+
+        logger.debug(`Successfully paired and trusted ${device.name}`)
     }
 
     const handleClick = async () => {
@@ -149,6 +176,7 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
     const isConnectedBinding = createBinding(device, "connected")
     const isPairedBinding = createBinding(device, "paired")
     const isConnectingBinding = createBinding(device, "connecting")
+    const batteryBinding = createBinding(device, "battery-percentage")
 
     // Reactive computed values - automatically update when dependencies change
     const statusText = createComputed(() => {
@@ -194,6 +222,40 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
         return !isPairing() && !isConnectingBinding.get()
     })
 
+    // Battery: BlueZ first, fallback to AstalBattery (UPower) by MAC
+    const upowerDevices = createBinding(batteryUPower, "devices")
+
+    const batteryPercent = createComputed(() => {
+        // Both BlueZ and AstalBattery return 0-1 range
+        const bluezPct = batteryBinding.get()
+        if (bluezPct >= 0) return Math.round(bluezPct * 100)
+
+        const macLower = device.address.toLowerCase()
+        const devices = upowerDevices.get()
+        for (const dev of devices) {
+            const serial = (dev.get_serial() || '').toLowerCase()
+            const nativePath = (dev.get_native_path() || '').toLowerCase()
+            if (serial.includes(macLower) || nativePath.includes(macLower)) {
+                return Math.round(dev.get_percentage() * 100)
+            }
+        }
+        return -1
+    })
+
+    const batteryIcon = createComputed(() => {
+        return getBluetoothBatteryIcon(batteryPercent())
+    })
+
+    const batteryText = createComputed(() => {
+        const pct = batteryPercent()
+        if (pct < 0) return ''
+        return `${Math.round(pct)}%`
+    })
+
+    const hasBattery = createComputed(() => {
+        return batteryPercent() >= 0
+    })
+
     const handleForget = () => {
         if (!bluetooth?.adapter) return
 
@@ -233,6 +295,23 @@ export function BluetoothItem({ device }: BluetoothItemProps) {
                         hexpand={true}
                         cssClasses={["body"]}
                     />
+
+                    {/* Battery Level */}
+                    <box
+                        orientation={Gtk.Orientation.HORIZONTAL}
+                        spacing={4}
+                        visible={hasBattery}
+                        cssClasses={["bluetooth-battery"]}
+                    >
+                        <label
+                            label={batteryIcon}
+                            cssClasses={["icon-label", "bluetooth-battery-icon"]}
+                        />
+                        <label
+                            label={batteryText}
+                            cssClasses={["caption", "bluetooth-battery-text"]}
+                        />
+                    </box>
 
                     {/* Status Label */}
                     <label

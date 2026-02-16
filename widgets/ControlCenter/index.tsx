@@ -45,13 +45,13 @@ export default function ControlCenter() {
                         self.present()
                         setCurrentPage("main")
                     } else {
-                        // Stop Bluetooth scan when Control Center is hidden (safety net)
+                        // Stop Bluetooth scan when Control Center is hidden
                         const bluetooth = Bluetooth.get_default()
                         if (bluetooth.adapter && bluetooth.adapter.discovering) {
                             try {
                                 bluetooth.adapter.stop_discovery()
+                                logger.debug("Bluetooth discovery stopped (window hidden)")
                             } catch (err: unknown) {
-                                // Ignore "No discovery started" error (BlueZ bug or already stopped by cleanup)
                                 if (!err.message?.includes("No discovery started")) {
                                     logger.error("Failed to stop Bluetooth discovery:", err)
                                 }

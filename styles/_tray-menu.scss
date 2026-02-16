@@ -159,6 +159,20 @@ cava {
     background: gtkalpha($accent_bg_color, $alpha-active);
 }
 
+// Bluetooth device battery indicator
+.bluetooth-battery {
+    opacity: $alpha-solid;
+
+    .bluetooth-battery-icon {
+        font-size: $font-size-sm;
+    }
+
+    .bluetooth-battery-text {
+        font-size: $font-size-xs;
+        font-weight: $font-weight-semibold;
+    }
+}
+
 // Section labels
 .section-label {
     font-size: $font-size-xs;

@@ -9,9 +9,6 @@ interface BluetoothMenuProps {
     onBack: () => void
 }
 
-// Global session tracking (shared across all component instances)
-let globalDiscoverySession = false
-
 export function BluetoothMenu({ onBack }: BluetoothMenuProps) {
     const bluetooth = Bluetooth.get_default()
 
@@ -33,33 +30,27 @@ export function BluetoothMenu({ onBack }: BluetoothMenuProps) {
             spacing={0}
             class="card card-padding"
             $={(self) => {
-                // Auto-start scan when menu is shown (use global session tracking)
-                if (bluetooth.adapter && !globalDiscoverySession) {
+                // Auto-start scan when menu is shown
+                if (bluetooth.adapter && !bluetooth.adapter.discovering) {
                     try {
                         bluetooth.adapter.start_discovery()
-                        globalDiscoverySession = true
+                        logger.debug("Bluetooth discovery started")
                     } catch (err: unknown) {
-                        // Ignore "Operation already in progress" - still claim ownership
-                        if (err.message?.includes("Operation already in progress")) {
-                            globalDiscoverySession = true
-                        } else {
+                        if (!err.message?.includes("Operation already in progress")) {
                             logger.error("Failed to start Bluetooth discovery:", err)
                         }
                     }
                 }
 
                 onCleanup(() => {
-                    if (bluetooth.adapter && globalDiscoverySession) {
+                    if (bluetooth.adapter && bluetooth.adapter.discovering) {
                         try {
                             bluetooth.adapter.stop_discovery()
-                            globalDiscoverySession = false
+                            logger.debug("Bluetooth discovery stopped (cleanup)")
                         } catch (err: unknown) {
-                            // Ignore "No discovery started" error (BlueZ state bug #807)
                             if (!err.message?.includes("No discovery started")) {
                                 logger.error("Failed to stop Bluetooth discovery:", err)
                             }
-                            // Reset even on error to avoid stuck state
-                            globalDiscoverySession = false
                         }
                     }
                 })

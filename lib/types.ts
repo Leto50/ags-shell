@@ -11,6 +11,7 @@ export interface BluetoothDevice {
     connected: boolean
     connecting: boolean
     icon: string
+    batteryPercentage: number // -1 if device has no battery
 }
 
 // WiFi Access Point interface
